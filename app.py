@@ -25,84 +25,55 @@ st.markdown("""
     </style>
     """, unsafe_allow_html=True)
 
-# 3. 資料庫：這就是你的 40 個核心單字
-# 你以後可以按格式增加新的變數，例如 LEVEL_2_WORDS
+# 3. 第一單元資料庫 (已根據你提供的清單整理)
 LEVEL_1_WORDS = """
+ignore,[ɪgˋnor],忽視
 ill,[ɪl],生病的
 imagine,[ɪˋmædʒɪn],想像
-importance,[ɪˋpɔrtns],重要性
-improve,[ɪˋpruvmənt],改善
+importance,[ɪmˋpɔrtns],重要性
+improve,[ɪmˋpruvmənt],改善
 include,[ɪnˋklud],包含
 income,[ˋɪn͵kʌm],收入
 increase,[ɪnˋkris],增加
+independence,[͵ɪndɪˋpɛndəns],獨立
 independent,[͵ɪndɪˋpɛndənt],獨立的
-indicate,[ˋɪndɪ͵ket],指示
+indicate,[ˋɪndə͵ket],指出
+industry,[ˋɪndəstrɪ],工業
 influence,[ˋɪnflʊəns],影響
-information,[͵ɪnfɚˋmeʃən],資訊
 ink,[ɪŋk],墨水
 insect,[ˋɪnsɛkt],昆蟲
 insist,[ɪnˋsɪst],堅持
 instance,[ˋɪnstəns],例子
-instant,[ˋɪnstənt],瞬間的
-instrument,[ˋɪnstrʊmənt],儀器
-intelligent,[ɪnˋtɛlədʒənt],聰明的
-intent,[ɪnˋtɛnt],意圖
-interest,[ˋɪntrɪst],興趣
-international,[͵ɪntɚˋnæʃənəl],國際的
-interview,[ˋɪntɚ͵vju],面試
-into,[ˋɪntu],進入
+instant,[ˋɪnstənt],即刻的
+instrument,[ˋɪnstrəmənt],儀器/樂器
+international,[͵ɪntɚˋnæʃən!],國際性的
+interview,[ˋɪntɚ͵vju],訪談
 introduce,[͵ɪntrəˋdjus],介紹
 invent,[ɪnˋvɛnt],發明
+invitation,[͵ɪnvəˋteʃən],邀請
 invite,[ɪnˋvaɪt],邀請
-iron,[ˋaɪɚn],鐵/燙衣服
-island,[ˋaɪlənd],島嶼
-it,[ɪt],它
-its,[ɪts],它的
-itself,[ɪtˋsɛlf],它自己
+island,[ˋaɪlənd],島
+item,[ˋaɪtəm],項目
 jacket,[ˋdʒækɪt],夾克
-jam,[dʒæm],果醬
-january,[ˋdʒænju͵ɛrɪ],一月
+jam,[dʒæm],塞滿/果醬
 jazz,[dʒæz],爵士樂
-jealous,[ˋdʒɛləs],嫉妒的
 jeans,[dʒinz],牛仔褲
 jeep,[dʒip],吉普車
-job,[dʒɑb],工作
 jog,[dʒɑg],慢跑
-join,[dʒɔɪn],加入
-joke,[dʒok],笑話
-journal,[ˋdʒɝnəl],期刊
-journey,[ˋdʒɝnɪ],旅行
-joy,[dʒɔɪ],歡樂
+joint,[dʒɔɪnt],關節
 judge,[dʒʌdʒ],法官/判決
-juice,[dʒus],果汁
-july,[dʒuˋlaɪ],七月
-jump,[dʒʌmp],跳
-june,[dʒun],六月
-junior,[ˋdʒunjɚ],資淺的
-just,[dʒʌst],剛才/僅僅
-kangaroo,[͵kæŋɡəˋru],袋鼠
-keep,[kip],保持
-key,[ki],鑰匙
-kick,[kɪk],踢
-kid,[kɪd],小孩
-kill,[kɪl],殺
-kind,[kaɪnd],種類/親切的
-king,[kɪŋ],國王
-kiss,[kɪs],親吻
-kitchen,[ˋkɪtʃɪn],廚房
-kite,[kaɪt],風箏
-knee,[ni],膝蓋
-knife,[naɪf],刀子
-knight,[naɪt],騎士
-knock,[nɑk],敲門
-know,[no],知道
+juicy,[ˋdʒusɪ],多汁的
+ketchup,[ˋkɛtʃəp],番茄醬
+kindergarten,[ˋkɪndɚ͵gɑrtn],幼稚園
+kingdom,[ˋkɪŋdəm],王國
+knock,[nɑk],相撞/敲門
 knowledge,[ˋnɑlɪdʒ],知識
 koala,[koˋɑlə],無尾熊
 ladybug,[ˋledɪ͵bʌg],瓢蟲
 """
 
-# 4. 初始化函數
-def load_and_format(raw_text):
+# 4. 輔助函數
+def load_data(raw_text):
     lines = [l.strip() for l in raw_text.strip().split('\n') if l.strip()]
     data = [l.split(',') for l in lines]
     return pd.DataFrame(data, columns=["英文", "音標", "中文"])
@@ -119,19 +90,21 @@ def get_lottie(url):
 bear_anim = get_lottie("https://assets10.lottiefiles.com/packages/lf20_stfayfky.json")
 welcome_anim = get_lottie("https://assets9.lottiefiles.com/packages/lf20_myejig9v.json")
 
+# 5. Session State 控制
 if 'page' not in st.session_state: st.session_state.page = "cover"
 
-# --- 模式 A：封面模式 ---
+# --- 模式 A：封面選單 ---
 if st.session_state.page == "cover":
     st.markdown('<p class="cute-title">🐶 言語森林 🌲</p>', unsafe_allow_html=True)
-    if welcome_anim: st_lottie(welcome_anim, height=250, key="welcome")
+    if welcome_anim: st_lottie(welcome_anim, height=220, key="welcome")
     
     st.markdown("<div style='text-align: center;'>", unsafe_allow_html=True)
-    st.write("### 準備好開始第一階段的冒險了嗎？")
+    st.write("### 🔑 請選擇學習單元：")
     
-    # 這裡就是你的 40 個單字大關卡
-    if st.button("🌟 挑戰核心 40 單字 🌟", use_container_width=True):
-        st.session_state.current_df = load_and_format(LEVEL_1_WORDS)
+    # 建立第一單元按鈕
+    if st.button("🌟 第一單元 (I ~ L 字首)", use_container_width=True):
+        st.session_state.current_df = load_data(LEVEL_1_WORDS)
+        # 初始化不重複抽題機制
         st.session_state.remaining_indices = list(range(len(st.session_state.current_df)))
         st.session_state.idx = st.session_state.remaining_indices.pop(random.randrange(len(st.session_state.remaining_indices)))
         st.session_state.score = 0
@@ -149,41 +122,20 @@ elif st.session_state.page == "study":
     row = df.iloc[st.session_state.idx]
     current_word = row['英文'].strip()
 
-    st.write(f"🌟 碎片收集進度：{st.session_state.score} / {len(df)}")
+    st.write(f"🌟 關卡進度：{st.session_state.score} / {len(df)}")
     st.progress(min(st.session_state.score / len(df), 1.0))
 
+    # 答對動畫與跳題邏輯
     if st.session_state.get('success_trigger', False):
         if bear_anim: st_lottie(bear_anim, height=150, key="bear")
         st.balloons()
-        st.success("🎯 答對了！")
-        time.sleep(1.2)
+        st.success("🎯 太棒了！答對囉！")
+        time.sleep(1.5)
         
         if not st.session_state.remaining_indices:
             st.balloons()
-            st.warning("🎉 恭喜！你已完成所有 40 個單字的挑戰！")
-            time.sleep(2)
+            st.warning("🎉 恭喜！你已完成第一單元的所有挑戰！")
+            time.sleep(2.5)
             st.session_state.page = "cover"
         else:
-            next_pos = random.randrange(len(st.session_state.remaining_indices))
-            st.session_state.idx = st.session_state.remaining_indices.pop(next_pos)
-            
-        st.session_state.success_trigger = False
-        st.rerun()
-
-    with st.container():
-        st.info(f"💡 **中文提示：** {row['中文']}")
-        c1, c2 = st.columns([3, 1])
-        with c1: st.write(f"🎧 **音標：** {row['音標']}")
-        with c2: 
-            if st.button("🔊 播放"): text_to_speech(current_word)
-
-        with st.form(key="game_form", clear_on_submit=True):
-            user_input = st.text_input("輸入框", label_visibility="collapsed", placeholder="請拼出單字...").strip().lower()
-            if st.form_submit_button("提交 ✨"):
-                if user_input == current_word.lower():
-                    st.session_state.score += 1
-                    st.session_state.success_trigger = True
-                    st.rerun()
-                else:
-                    st.error("❌ 差一點點，再試試看！")
-                    text_to_speech(current_word)
+            # 從
