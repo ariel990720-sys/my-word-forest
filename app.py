@@ -18,70 +18,126 @@ st.markdown("""
         box-shadow: 0 10px 30px rgba(76, 175, 80, 0.1); border: 4px solid #C8E6C9;
     }
     .cute-title {
-        font-size: 3rem; color: #388E3C; text-align: center; font-weight: bold;
+        font-size: 3.5rem; color: #388E3C; text-align: center; font-weight: bold;
         font-family: 'Microsoft JhengHei', cursive;
     }
-    /* 隱藏建議單字與不必要的框框 */
-    .stTextInput>div>div>input {
-        autocomplete: off;
-    }
+    input { autocomplete: off !important; }
     </style>
     """, unsafe_allow_html=True)
 
-# 3. 多分類資料庫 (你可以隨時增加單字，現在已經分好類了)
-DATA_DICT = {
-    "🐾 森林動物": [
-        "koala,[koˋɑlə],無尾熊", "ladybug,[ˋledɪ͵bʌg],瓢蟲", "rabbit,[ˋræbɪt],兔子",
-        "squirrel,[ˋskwɝəl],松鼠", "deer,[dɪr],鹿", "owl,[aʊl],貓頭鷹",
-        "fox,[fɑks],狐狸", "bear,[bɛr],熊", "monkey,[ˋmʌŋkɪ],猴子", "tiger,[ˋtaɪgɚ],老虎"
-    ],
-    "🌲 綠色植物": [
-        "flower,[ˋflaʊɚ],花", "grass,[græs],草", "forest,[ˋfɔrɪst],森林",
-        "mushroom,[ˋmʌʃrum],蘑菇", "branch,[bræntʃ],樹枝", "leaf,[lif],葉子",
-        "root,[rut],根", "seed,[sid],種子", "bamboo,[bæmˋbu],竹子", "pine,[paɪn],松樹"
-    ],
-    "🏠 日常生活": [
-        "imagine,[ɪˋmædʒɪn],想像", "improve,[ɪˋpruvmənt],改善", "judge,[dʒʌdʒ],判斷",
-        "income,[ˋɪn͵kʌm],收入", "office,[ˋɑfɪs],辦公室", "school,[skul],學校",
-        "friend,[frɛnd],朋友", "happy,[ˋhæpɪ],快樂", "coffee,[ˋkɔfɪ],咖啡", "bread,[brɛd],麵包"
-    ]
-}
+# 3. 資料庫：這就是你的 40 個核心單字
+# 你以後可以按格式增加新的變數，例如 LEVEL_2_WORDS
+LEVEL_1_WORDS = """
+ill,[ɪl],生病的
+imagine,[ɪˋmædʒɪn],想像
+importance,[ɪˋpɔrtns],重要性
+improve,[ɪˋpruvmənt],改善
+include,[ɪnˋklud],包含
+income,[ˋɪn͵kʌm],收入
+increase,[ɪnˋkris],增加
+independent,[͵ɪndɪˋpɛndənt],獨立的
+indicate,[ˋɪndɪ͵ket],指示
+influence,[ˋɪnflʊəns],影響
+information,[͵ɪnfɚˋmeʃən],資訊
+ink,[ɪŋk],墨水
+insect,[ˋɪnsɛkt],昆蟲
+insist,[ɪnˋsɪst],堅持
+instance,[ˋɪnstəns],例子
+instant,[ˋɪnstənt],瞬間的
+instrument,[ˋɪnstrʊmənt],儀器
+intelligent,[ɪnˋtɛlədʒənt],聰明的
+intent,[ɪnˋtɛnt],意圖
+interest,[ˋɪntrɪst],興趣
+international,[͵ɪntɚˋnæʃənəl],國際的
+interview,[ˋɪntɚ͵vju],面試
+into,[ˋɪntu],進入
+introduce,[͵ɪntrəˋdjus],介紹
+invent,[ɪnˋvɛnt],發明
+invite,[ɪnˋvaɪt],邀請
+iron,[ˋaɪɚn],鐵/燙衣服
+island,[ˋaɪlənd],島嶼
+it,[ɪt],它
+its,[ɪts],它的
+itself,[ɪtˋsɛlf],它自己
+jacket,[ˋdʒækɪt],夾克
+jam,[dʒæm],果醬
+january,[ˋdʒænju͵ɛrɪ],一月
+jazz,[dʒæz],爵士樂
+jealous,[ˋdʒɛləs],嫉妒的
+jeans,[dʒinz],牛仔褲
+jeep,[dʒip],吉普車
+job,[dʒɑb],工作
+jog,[dʒɑg],慢跑
+join,[dʒɔɪn],加入
+joke,[dʒok],笑話
+journal,[ˋdʒɝnəl],期刊
+journey,[ˋdʒɝnɪ],旅行
+joy,[dʒɔɪ],歡樂
+judge,[dʒʌdʒ],法官/判決
+juice,[dʒus],果汁
+july,[dʒuˋlaɪ],七月
+jump,[dʒʌmp],跳
+june,[dʒun],六月
+junior,[ˋdʒunjɚ],資淺的
+just,[dʒʌst],剛才/僅僅
+kangaroo,[͵kæŋɡəˋru],袋鼠
+keep,[kip],保持
+key,[ki],鑰匙
+kick,[kɪk],踢
+kid,[kɪd],小孩
+kill,[kɪl],殺
+kind,[kaɪnd],種類/親切的
+king,[kɪŋ],國王
+kiss,[kɪs],親吻
+kitchen,[ˋkɪtʃɪn],廚房
+kite,[kaɪt],風箏
+knee,[ni],膝蓋
+knife,[naɪf],刀子
+knight,[naɪt],騎士
+knock,[nɑk],敲門
+know,[no],知道
+knowledge,[ˋnɑlɪdʒ],知識
+koala,[koˋɑlə],無尾熊
+ladybug,[ˋledɪ͵bʌg],瓢蟲
+"""
 
-# 4. 功能函數
+# 4. 初始化函數
+def load_and_format(raw_text):
+    lines = [l.strip() for l in raw_text.strip().split('\n') if l.strip()]
+    data = [l.split(',') for l in lines]
+    return pd.DataFrame(data, columns=["英文", "音標", "中文"])
+
 def text_to_speech(text):
     js = f"<script>var m = new SpeechSynthesisUtterance('{text}'); m.lang='en-US'; window.speechSynthesis.speak(m);</script>"
     components.html(js, height=0)
 
 @st.cache_data
-def get_lottie_anim(url):
+def get_lottie(url):
     try: return requests.get(url).json()
     except: return None
 
-bear_anim = get_lottie_anim("https://assets10.lottiefiles.com/packages/lf20_stfayfky.json")
-welcome_anim = get_lottie_anim("https://assets9.lottiefiles.com/packages/lf20_myejig9v.json")
+bear_anim = get_lottie("https://assets10.lottiefiles.com/packages/lf20_stfayfky.json")
+welcome_anim = get_lottie("https://assets9.lottiefiles.com/packages/lf20_myejig9v.json")
 
-# 5. 初始化 Session State
 if 'page' not in st.session_state: st.session_state.page = "cover"
-if 'score' not in st.session_state: st.session_state.score = 0
-if 'remaining_indices' not in st.session_state: st.session_state.remaining_indices = []
 
-# --- 模式 A：封面選單 ---
+# --- 模式 A：封面模式 ---
 if st.session_state.page == "cover":
-    st.markdown('<p class="cute-title">🐶 言語森林：關卡選擇 🌲</p>', unsafe_allow_html=True)
-    if welcome_anim: st_lottie(welcome_anim, height=200, key="welcome")
+    st.markdown('<p class="cute-title">🐶 言語森林 🌲</p>', unsafe_allow_html=True)
+    if welcome_anim: st_lottie(welcome_anim, height=250, key="welcome")
     
-    st.write("### 🔑 請選擇你想挑戰的關卡：")
-    for category in DATA_DICT.keys():
-        if st.button(f"{category} (10 個單字)"):
-            # 轉換資料
-            data_list = [line.split(',') for line in DATA_DICT[category]]
-            st.session_state.current_df = pd.DataFrame(data_list, columns=["英文", "音標", "中文"])
-            # 初始化「不重複」索引包
-            st.session_state.remaining_indices = list(range(len(st.session_state.current_df)))
-            st.session_state.idx = st.session_state.remaining_indices.pop(random.randrange(len(st.session_state.remaining_indices)))
-            st.session_state.page = "study"
-            st.session_state.score = 0
-            st.rerun()
+    st.markdown("<div style='text-align: center;'>", unsafe_allow_html=True)
+    st.write("### 準備好開始第一階段的冒險了嗎？")
+    
+    # 這裡就是你的 40 個單字大關卡
+    if st.button("🌟 挑戰核心 40 單字 🌟", use_container_width=True):
+        st.session_state.current_df = load_and_format(LEVEL_1_WORDS)
+        st.session_state.remaining_indices = list(range(len(st.session_state.current_df)))
+        st.session_state.idx = st.session_state.remaining_indices.pop(random.randrange(len(st.session_state.remaining_indices)))
+        st.session_state.score = 0
+        st.session_state.page = "study"
+        st.rerun()
+    st.markdown("</div>", unsafe_allow_html=True)
 
 # --- 模式 B：練習模式 ---
 elif st.session_state.page == "study":
@@ -93,30 +149,27 @@ elif st.session_state.page == "study":
     row = df.iloc[st.session_state.idx]
     current_word = row['英文'].strip()
 
-    st.write(f"🌟 目前關卡進度：{st.session_state.score} / {len(df)}")
+    st.write(f"🌟 碎片收集進度：{st.session_state.score} / {len(df)}")
     st.progress(min(st.session_state.score / len(df), 1.0))
 
-    # 答對邏輯
     if st.session_state.get('success_trigger', False):
         if bear_anim: st_lottie(bear_anim, height=150, key="bear")
         st.balloons()
         st.success("🎯 答對了！")
-        time.sleep(1.5)
+        time.sleep(1.2)
         
-        # 檢查是否還有剩下單字
         if not st.session_state.remaining_indices:
-            st.warning("🎉 恭喜！本關卡單字全數通關！")
+            st.balloons()
+            st.warning("🎉 恭喜！你已完成所有 40 個單字的挑戰！")
             time.sleep(2)
             st.session_state.page = "cover"
         else:
-            # 從「剩餘清單」中抽下一題
-            next_idx_pos = random.randrange(len(st.session_state.remaining_indices))
-            st.session_state.idx = st.session_state.remaining_indices.pop(next_idx_pos)
+            next_pos = random.randrange(len(st.session_state.remaining_indices))
+            st.session_state.idx = st.session_state.remaining_indices.pop(next_pos)
             
         st.session_state.success_trigger = False
         st.rerun()
 
-    # 題目卡片
     with st.container():
         st.info(f"💡 **中文提示：** {row['中文']}")
         c1, c2 = st.columns([3, 1])
@@ -124,16 +177,13 @@ elif st.session_state.page == "study":
         with c2: 
             if st.button("🔊 播放"): text_to_speech(current_word)
 
-        # 這裡不顯示建議單字
         with st.form(key="game_form", clear_on_submit=True):
-            # 使用 label_visibility 隱藏標籤，讓畫面更乾淨
-            user_input = st.text_input("請拼出單字", label_visibility="collapsed", placeholder="請在此輸入英文...").strip().lower()
+            user_input = st.text_input("輸入框", label_visibility="collapsed", placeholder="請拼出單字...").strip().lower()
             if st.form_submit_button("提交 ✨"):
                 if user_input == current_word.lower():
                     st.session_state.score += 1
                     st.session_state.success_trigger = True
                     st.rerun()
                 else:
-                    st.error("❌ 再試一次看看？")
+                    st.error("❌ 差一點點，再試試看！")
                     text_to_speech(current_word)
-                    
