@@ -138,4 +138,29 @@ elif st.session_state.page == "study":
             time.sleep(2.5)
             st.session_state.page = "cover"
         else:
-            # 從
+            # 從剩下還沒出的題目中抽一題
+            next_pos = random.randrange(len(st.session_state.remaining_indices))
+            st.session_state.idx = st.session_state.remaining_indices.pop(next_pos)
+            
+        st.session_state.success_trigger = False
+        st.rerun()
+
+    with st.container():
+        st.info(f"💡 **中文提示：** {row['中文']}")
+        c1, c2 = st.columns([3, 1])
+        with c1: st.write(f"🎧 **音標：** {row['音標']}")
+        with c2: 
+            if st.button("🔊 播放"): text_to_speech(current_word)
+
+        # 提交表單：不顯示建議單字
+        with st.form(key="game_form", clear_on_submit=True):
+            user_input = st.text_input("輸入框", label_visibility="collapsed", placeholder="請拼出單字...").strip().lower()
+            if st.form_submit_button("提交 ✨"):
+                # 這裡會判斷 user 輸入是否等於正確答案
+                if user_input == current_word.lower():
+                    st.session_state.score += 1
+                    st.session_state.success_trigger = True
+                    st.rerun()
+                else:
+                    st.error("❌ 再試試看？這題還沒收集到喔！")
+                    text_to_speech(current_word)
