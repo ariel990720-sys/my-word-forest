@@ -71,4 +71,50 @@ if st.session_state.page == "cover":
 
     st.divider()
     st.write("### 📖 森林單字書籤")
-    tab1, tab2, tab3 = st.tabs(["第一單元", "第二
+    tab1, tab2, tab3 = st.tabs(["第一單元", "第二單元", "第三單元"])
+    with tab1: st.dataframe(parse_data(U1_RAW), hide_index=True, use_container_width=True)
+    with tab2: st.dataframe(parse_data(U2_RAW), hide_index=True, use_container_width=True)
+    with tab3: st.dataframe(parse_data(U3_RAW), hide_index=True, use_container_width=True)
+
+# --- 拼字挑戰 ---
+elif st.session_state.page == "study":
+    c_back, c_t1, c_t2 = st.columns([1, 1, 1])
+    with c_back:
+        if st.button("⬅️ 返回"): st.session_state.page = "cover"; st.rerun()
+    with c_t1: st.session_state.show_cn = st.toggle("中文", value=st.session_state.show_cn)
+    with c_t2: st.session_state.show_ipa = st.toggle("音標", value=st.session_state.show_ipa)
+
+    row = st.session_state.current_df.iloc[st.session_state.idx]
+    current_word = row['英文'].strip()
+
+    st.write(f"🌟 **{st.session_state.unit_name}** | 進度：{st.session_state.score} / {len(st.session_state.current_df)}")
+    
+    if st.session_state.get('success_trigger', False):
+        st.success(f"🎯 答對了！答案：{current_word}")
+        time.sleep(1)
+        if not st.session_state.remaining_indices:
+            st.session_state.page = "cover"
+        else:
+            st.session_state.idx = st.session_state.remaining_indices.pop(random.randrange(len(st.session_state.remaining_indices)))
+        st.session_state.success_trigger = False
+        st.rerun()
+
+    with st.container():
+        if st.session_state.show_cn: st.info(f"💡 中文：{row['中文']}")
+        if st.session_state.show_ipa: st.write(f"🎧 音標：{row['音標']}")
+        
+        # 🔊 播放鍵：現在點擊幾次響幾次
+        if st.button("🔊 播放發音", key=f"spk_btn_{time.time()}"):
+            text_to_speech(current_word)
+
+        # 明文輸入
+        d_key = f"input_{st.session_state.score}_{st.session_state.idx}"
+        with st.form(key=f"form_{d_key}", clear_on_submit=True):
+            user_input = st.text_input("拼寫單字", label_visibility="collapsed", placeholder="在此輸入單字...", key=d_key).strip()
+            if st.form_submit_button("檢查答案"):
+                if user_input.lower() == current_word.lower():
+                    st.session_state.score += 1
+                    st.session_state.success_trigger = True
+                    st.rerun()
+                else:
+                    st.error("❌ 拼錯囉，再試試！")
