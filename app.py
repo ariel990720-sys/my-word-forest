@@ -130,5 +130,52 @@ elif st.session_state.page == "study":
     row = df.iloc[st.session_state.idx]
     current_word = row['en'].strip()
 
-    st.write(f
-    
+    st.write(f"🌟 已收集碎片：{st.session_state.score} / {len(df)}")
+    st.progress(min(st.session_state.score / len(df), 1.0))
+
+    # 成功動畫與自動下一題
+    if st.session_state.get('success_trigger', False):
+        if bear_anim: st_lottie(bear_anim, height=150, key=f"bear_{st.session_state.score}")
+        st.balloons()
+        st.success("🎯 答對了！")
+        time.sleep(1.2)
+        
+        if not st.session_state.remaining_indices:
+            st.warning("🎉 全單元達成！")
+            time.sleep(2)
+            st.session_state.page = "cover"
+        else:
+            next_pos = random.randrange(len(st.session_state.remaining_indices))
+            st.session_state.idx = st.session_state.remaining_indices.pop(next_pos)
+            
+        st.session_state.success_trigger = False
+        st.rerun()
+
+    # 題目卡片
+    with st.container():
+        st.info(f"💡 中文意思：{row['cn']}")
+        c1, c2 = st.columns([3, 1])
+        with c1: st.write(f"🎧 音標：{row['ipa']}")
+        with c2: 
+            if st.button("🔊 播放"): text_to_speech(current_word)
+
+        # 這裡使用 type="password" 強制讓瀏覽器判定為密碼，不儲存歷史紀錄
+        # 同時使用動態 Key，讓瀏覽器無法對應
+        dynamic_key = f"input_step_{st.session_state.score}_{st.session_state.idx}"
+        
+        with st.form(key=f"form_{dynamic_key}", clear_on_submit=True):
+            user_input = st.text_input(
+                "Spell", 
+                type="password", # 關鍵防禦 1
+                label_visibility="collapsed", 
+                placeholder="請拼出單字...",
+                key=dynamic_key  # 關鍵防禦 2
+            ).strip().lower()
+            
+            if st.form_submit_button("檢查答案 ✨"):
+                if user_input == current_word.lower():
+                    st.session_state.score += 1
+                    st.session_state.success_trigger = True
+                    st.rerun()
+                else:
+                    st.error("❌ 拼錯了唷，再試一次！")
