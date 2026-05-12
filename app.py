@@ -45,7 +45,7 @@ if 'show_ipa' not in st.session_state: st.session_state.show_ipa = True
 
 # --- 封面選單 (主選單書籤) ---
 if st.session_state.page == "cover":
-    st.markdown('<p class="cute-title">🐾 萌萌拼字挑戰 🌲</p>', unsafe_allow_html=True)
+    st.markdown('<p class="cute-title">🐾 拼字挑戰 🌲</p>', unsafe_allow_html=True)
     
     col1, col2, col3 = st.columns(3)
     def start_game(raw, name):
