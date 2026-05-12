@@ -5,7 +5,7 @@ import time
 import streamlit.components.v1 as components
 
 # 1. 基礎設定
-st.set_page_config(page_title="萌萌言語森林", page_icon="🐾", layout="centered")
+st.set_page_config(page_title="單字森林", page_icon="🐾", layout="centered")
 
 # 2. 介面美化
 st.markdown("""
