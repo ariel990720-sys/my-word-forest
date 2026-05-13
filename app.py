@@ -5,14 +5,21 @@ import time
 import streamlit.components.v1 as components
 
 # 1. 基礎設定
-st.set_page_config(page_title="萌萌言語森林", page_icon="🐾", layout="centered")
+st.set_page_config(page_title="言語森林", page_icon="🐾", layout="centered")
 
 # 2. 介面美化
 st.markdown("""
     <style>
     .stApp { background-color: #F1F8E9; }
     .cute-title { font-size: 2.5rem; color: #388E3C; text-align: center; font-weight: bold; }
-    .timer-text { font-size: 1.2rem; color: #555; text-align: right; font-weight: bold; }
+    .review-tag { 
+        color: #D32F2F; background-color: #FFEBEE; padding: 5px 10px; 
+        border-radius: 5px; font-weight: bold; border: 1px solid #FFCDD2;
+    }
+    .stat-box {
+        padding: 20px; background-color: #FFFFFF; border-radius: 10px;
+        box-shadow: 0 2px 4px rgba(0,0,0,0.1); text-align: center;
+    }
     </style>
     """, unsafe_allow_html=True)
 
@@ -30,22 +37,29 @@ def text_to_speech(text):
     js = f"""<script>window.speechSynthesis.cancel(); var msg = new SpeechSynthesisUtterance('{text}'); msg.lang = 'en-US'; window.speechSynthesis.speak(msg);</script>"""
     components.html(js, height=0)
 
+# 初始化 Session State
 if 'page' not in st.session_state: st.session_state.page = "cover"
 if 'show_cn' not in st.session_state: st.session_state.show_cn = True
 if 'show_ipa' not in st.session_state: st.session_state.show_ipa = True
 
-# --- 封面頁 ---
+# --- 封面頁 (書籤) ---
 if st.session_state.page == "cover":
-    st.markdown('<p class="cute-title">🐾 萌萌拼字挑戰 🌲</p>', unsafe_allow_html=True)
+    st.markdown('<p class="cute-title">🐾 拼字挑戰 🌲</p>', unsafe_allow_html=True)
     col1, col2, col3 = st.columns(3)
     
     def start_game(raw, name):
         st.session_state.current_df = parse_data(raw)
         st.session_state.unit_name = name
-        st.session_state.remaining_indices = list(range(len(st.session_state.current_df)))
-        random.shuffle(st.session_state.remaining_indices)
+        st.session_state.total_count = len(st.session_state.current_df)
+        st.session_state.wrong_indices = set() # 記錄哪些單字有錯過
+        st.session_state.first_try_correct = 0 # 第一次就對的數量
+        
+        indices = list(range(st.session_state.total_count))
+        random.shuffle(indices)
+        st.session_state.remaining_indices = indices
         st.session_state.idx = st.session_state.remaining_indices.pop(0)
-        st.session_state.start_time = time.time()
+        # 用來記錄目前單字是否為「重練中」
+        st.session_state.is_review = False 
         st.session_state.page = "study"
         st.rerun()
 
@@ -65,58 +79,78 @@ if st.session_state.page == "cover":
 
 # --- 挑戰頁 ---
 elif st.session_state.page == "study":
-    elapsed = int(time.time() - st.session_state.start_time)
-    
-    # 控制列：返回與開關
-    c1, c2, c3, c4 = st.columns([1, 1, 1, 1])
-    with c1:
+    # 頂部控制列
+    c_back, c_t1, c_t2 = st.columns([1, 1, 1])
+    with c_back:
         if st.button("⬅️ 返回"): st.session_state.page = "cover"; st.rerun()
-    with c2:
-        st.session_state.show_cn = st.toggle("中文", value=st.session_state.show_cn)
-    with c3:
-        st.session_state.show_ipa = st.toggle("音標", value=st.session_state.show_ipa)
-    with c4:
-        st.markdown(f'<p class="timer-text">⏱️ {elapsed}s</p>', unsafe_allow_html=True)
+    with c_t1: st.session_state.show_cn = st.toggle("中文", value=st.session_state.show_cn)
+    with c_t2: st.session_state.show_ipa = st.toggle("音標", value=st.session_state.show_ipa)
 
     row = st.session_state.current_df.iloc[st.session_state.idx]
     current_word = row['英文'].strip()
     rem_count = len(st.session_state.remaining_indices) + 1
     
-    st.write(f"🌟 **{st.session_state.unit_name}** | 剩餘單字：{rem_count}")
+    st.write(f"🌟 **{st.session_state.unit_name}** | 剩餘：{rem_count}")
     
+    # 顯示「錯題輪迴」標記
+    if st.session_state.is_review:
+        st.markdown('<span class="review-tag">🔄 錯題重練中</span>', unsafe_allow_html=True)
+
     if st.session_state.get('success_trigger', False):
         st.success("🎯 答對了！")
         time.sleep(0.6)
         if not st.session_state.remaining_indices:
-            st.balloons()
-            st.info(f"🎊 完成單元！總耗時：{int(time.time() - st.session_state.start_time)} 秒")
-            time.sleep(2)
-            st.session_state.page = "cover"
+            # 結算頁面
+            st.session_state.page = "result"
         else:
             st.session_state.idx = st.session_state.remaining_indices.pop(0)
+            # 判斷下一題是否為重練（檢查是否在錯題集裡面）
+            st.session_state.is_review = st.session_state.idx in st.session_state.wrong_indices
         st.session_state.success_trigger = False
         st.rerun()
 
     with st.container():
-        # 根據開關顯示內容
-        if st.session_state.show_cn:
-            st.info(f"💡 中文：{row['中文']}")
-        if st.session_state.show_ipa:
-            st.write(f"🎧 音標：{row['音標']}")
+        if st.session_state.show_cn: st.info(f"💡 中文：{row['中文']}")
+        if st.session_state.show_ipa: st.write(f"🎧 音標：{row['音標']}")
         
         if st.button("🔊 播放發音", key=f"spk_{st.session_state.idx}"):
             text_to_speech(current_word)
 
-        with st.form(key=f"quiz_{st.session_state.idx}", clear_on_submit=True):
-            user_input = st.text_input("拼寫單字", label_visibility="collapsed", placeholder="請在此輸入單字...").strip()
+        with st.form(key=f"q_{st.session_state.idx}", clear_on_submit=True):
+            u_in = st.text_input("拼寫單字", label_visibility="collapsed", placeholder="在此輸入...").strip()
             if st.form_submit_button("檢查答案"):
-                if user_input.lower() == current_word.lower():
+                if u_in.lower() == current_word.lower():
+                    # 只有從未錯過的單字才計入「初次正確」
+                    if st.session_state.idx not in st.session_state.wrong_indices:
+                        st.session_state.first_try_correct += 1
                     st.session_state.success_trigger = True
                     st.rerun()
                 else:
-                    st.error(f"❌ 錯囉！答案是：{current_word}")
-                    # 錯題循環：塞到清單末尾
+                    st.error(f"❌ 答錯了！正確答案是：{current_word}")
+                    # 標記為錯題
+                    st.session_state.wrong_indices.add(st.session_state.idx)
+                    # 塞回輪迴清單末尾
                     st.session_state.remaining_indices.append(st.session_state.idx)
                     time.sleep(1.5)
                     st.session_state.idx = st.session_state.remaining_indices.pop(0)
+                    # 更新重練狀態
+                    st.session_state.is_review = st.session_state.idx in st.session_state.wrong_indices
                     st.rerun()
+
+# --- 結果結算頁 ---
+elif st.session_state.page == "result":
+    st.markdown('<p class="cute-title">🎊 挑戰完成！</p>', unsafe_allow_html=True)
+    
+    accuracy = int((st.session_state.first_try_correct / st.session_state.total_count) * 100)
+    
+    st.markdown(f"""
+        <div class="stat-box">
+            <h3>本次練習統計</h3>
+            <h1 style="color: #388E3C; font-size: 3rem;">{accuracy}%</h1>
+            <p>第一次即答對：{st.session_state.first_try_correct} / {st.session_state.total_count}</p>
+        </div>
+    """, unsafe_allow_html=True)
+    
+    if st.button("🍎 回到森林首頁"):
+        st.session_state.page = "cover"
+        st.rerun()
