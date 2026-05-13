@@ -1,115 +1,98 @@
 import streamlit as st
-import pandas as pd
 import random
-import time
-import streamlit.components.v1 as components
 
-# 1. 基礎設定
-st.set_page_config(page_title="單字森林", page_icon="🐾", layout="centered")
-
-# 2. 介面美化
+# 1. 頁面設定與美化
+st.set_page_config(page_title="10B 尋夢單字挑戰", layout="centered")
 st.markdown("""
     <style>
-    .stApp { background-color: #F1F8E9; }
-    input { font-size: 1.2rem !important; }
-    .cute-title {
-        font-size: 2.5rem; color: #388E3C; text-align: center; font-weight: bold;
-    }
+    .stTextInput>div>div>input { font-size: 24px; text-align: center; }
+    .vocab-card { background-color: #f0f2f6; padding: 30px; border-radius: 15px; border-left: 10px solid #2196f3; text-align: center; margin: 20px 0; }
+    .word-text { font-size: 48px; font-weight: bold; color: #0d47a1; }
+    .status-text { font-size: 14px; color: #666; }
     </style>
-    """, unsafe_allow_html=True)
+""", unsafe_allow_html=True)
 
-# 3. 資料庫 (修正第三單元格式)
-U1_RAW = """ignore,[ɪgˋnor],忽視\nill,[ɪl],生病的\nimagine,[ɪˋmædʒɪn],想像\nimportance,[ɪmˋpɔrtns],重要性\nimprove,[ɪˋpruvmənt],改善\ninclude,[ɪnˋklud],包含\nincome,[ˋɪn͵kʌm],收入\nincrease,[ɪnˋkris],增加\nindependence,[͵ɪndɪˋpɛndəns],獨立\nindependent,[͵ɪndɪˋpɛndənt],獨立的\nindicate,[ˋɪndə͵ket],指出\nindustry,[ˋɪndəstrɪ],工業\ninfluence,[ˋɪnflʊəns],影響\nink,[ɪŋk],墨水\ninsect,[ˋɪnsɛkt],昆蟲\ninsist,[ɪnˋsɪst],堅持\ninstance,[ˋɪnstəns],例子\ninstant,[ˋɪnstənt],即刻的\ninstrument,[ˋɪnstrəmənt],儀器/樂器\ninternational,[͵ɪntɚˋnæʃən!],國際性的\ninterview,[ˋɪntɚ͵vju],訪談\nintroduce,[͵ɪntrəˋdjus],介紹\ninvent,[ɪnˋvɛnt],發明\ninvitation,[͵ɪnvəˋteʃən],邀請\ninvite,[ɪnˋvaɪt],邀請\nisland,[ˋaɪlənd],島\nitem,[ˋaɪtəm],項目\njacket,[ˋdʒækɪt],夾克\njam,[dʒæm],塞滿/果醬\njazz,[dʒæz],爵士樂\njeans,[dʒinz],牛仔褲\njeep,[dʒip],吉普車\njog,[dʒɑg],慢跑\njoint,[dʒɔɪnt],關節\njudge,[dʌdʒ],法官/判決\njuicy,[ˋdʒusɪ],多汁的\nketchup,[ˋkɛtʃəp],番茄醬\nkindergarten,[ˋkɪndɚ͵gɑrtn],幼稚園\nkingdom,[ˋkɪŋdəm],王國\nknock,[nɑk],相撞/敲門\nknowledge,[ˋnɑlɪdʒ],知識\nkoala,[koˋɑlə],無尾熊\nladybug,[ˋledɪ͵bʌg],瓢蟲"""
-U2_RAW = """lane,[len],小路\nlanguage,[ˋlæŋgwɪdʒ],語言\nlantern,[ˋlæntɚn],燈籠\nlap,[læp],重疊部分\nlatest,[ˋletɪst],最新的\nlawyer,[ˋlɔjɚ],律師\nleadership,[ˋlidɚʃɪp],領導\nlegal,[ˋlig!],法律上的\nlemon,[ˋlɛmən],檸檬\nlemonade,[͵lɛmənˋed],檸檬水\nlend,[lɛnd],把……借給\nlength,[lɛŋθ],長度\nleopard,[ˋlɛpɚd],豹\nlettuce,[ˋlɪs],萵苣\nlibrary,[ˋlaɪ͵brɛrɪ],圖書館\nlick,[lɪk],舔\nlid,[lɪd],蓋子\nlightning,[ˋlaɪtnɪŋ],閃電\nlimit,[ˋlɪmɪt],界限/限制\nlink,[lɪŋk],聯繫\nliquid,[ˋlɪkwɪd],液體\nlistener,[ˋlɪsnɚ],傾聽者\nloaf,[lof],一條\nlocal,[ˋlok!],地方性的\nlocate,[loˋket],確定……的地點\nlock,[lɑk],鎖\nlog,[lɔg],圓木\nlone,[lon],孤單的\nlonely,[ˋlonlɪ],孤獨的\nlose,[luz],丟失\nloser,[ˋluzɚ],失敗者\nloss,[lɔs],遺失\nlovely,[ˋlʌvlɪ],可愛的\nlover,[ˋlʌvɚ],戀人\nlower,[ˋloɚ],較低的\nluck,[lʌk],運氣\nmagazine,[͵mægəˋzin],雜誌\nmagic,[ˋmædʒɪk],魔法\nmagician,[məˋdʒɪʃən],魔術師\nmain,[men],主要的\nmaintain,[menˋten],保持\nmale,[mel],男性\nMandarin,[ˋmændərɪn],華語"""
-U3_RAW = """mango,[ˋmæŋgo],芒果\nmanner,[ˋmænɚ],方法/舉止\nmark,[mɑrk],標記/痕跡\nmarriage,[ˋmærɪdʒ],婚姻\nmask,[mæsk],口罩/假面具\nmass,[mæs],大眾的\nmat,[mæt],墊子\nmatch,[mætʃ],相配/比賽\nmate,[met],夥伴\nmaterial,[məˋtɪrɪəl],材料\nmeal,[mil],一餐\nmeaning,[ˋminɪŋ],含義\nmeans,[minz],手段\nmeasurable,[ˋmɛʒərəb!],可測量的\nmeasure,[ˋmɛʒɚ],測量\nmedicine,[ˋmɛdəsn],藥\nmeeting,[ˋmitɪŋ],會議\nmelody,[ˋmɛlədɪ],旋律\nmelon,[ˋmɛlən],瓜\nmember,[ˋmɛmbɚ],成員\nmemory,[ˋmɛmərɪ],記憶\nmenu,[ˋmɛnju],菜單\nmessage,[ˋmɛsɪdʒ],消息\nmetal,[ˋmɛt!],金屬\nmeter,[ˋmitɚ],計量器\nmethod,[ˋmɛθəd],方法\nmilitary,[ˋmɪlə͵tɛrɪ],軍事的\nmillion,[ˋmɪljən],百萬\nmine,[maɪn],我的\nminus,[ˋmaɪnəs],減去\nmirror,[ˋmɪrɚ],鏡子\nmix,[mɪks],混和\nmodel,[ˋmɑd!],模型\nmodern,[ˋmɑdɚn],現代的\nmonster,[ˋmɑnstɚ],怪物\nmosquito,[məsˋkito],蚊子\nmoth,[mɔθ],蛾\nmotion,[ˋmoʃən],姿態\nmotorcycle,[ˋmotɚ͵saɪk!],摩托車\nmovable,[ˋmuvəb!],可移動的\nMRT,[MRT],大眾捷運系統\nsubway,[ˋsʌb͵we],地下鐵\nunderground,[ˋʌndɚ͵graʊnd],地下鐵\nmetro,[ˋmɛtro],地鐵\nmule,[mjul],騾"""
+# 2. 初始化 Session State
+if 'vocab_list' not in st.session_state:
+    st.session_state.vocab_list = []      # 原始清單
+    st.session_state.current_round = []   # 目前這輪要考的
+    st.session_state.wrong_list = []      # 答錯待補考
+    st.session_state.current_pair = None  # 目前題目
+    st.session_state.is_started = False
+    st.session_state.finished = False
 
-def parse_data(raw):
-    lines = [l.strip() for l in raw.strip().split('\n') if l.strip()]
-    return pd.DataFrame([l.split(',', 2) for l in lines], columns=["英文", "音標", "中文"])
-
-# 100% 回歸一開始成功的語音方案
-def text_to_speech(text):
-    text = text.replace("'", "\\'")
-    js = f"""
-    <script>
-    var msg = new SpeechSynthesisUtterance('{text}');
-    msg.lang = 'en-US';
-    window.speechSynthesis.speak(msg);
-    </script>
-    """
-    components.html(js, height=0)
-
-if 'page' not in st.session_state: st.session_state.page = "cover"
-if 'show_cn' not in st.session_state: st.session_state.show_cn = True
-if 'show_ipa' not in st.session_state: st.session_state.show_ipa = True
-
-# --- 封面選單 (主選單書籤) ---
-if st.session_state.page == "cover":
-    st.markdown('<p class="cute-title">🐾 拼字挑戰 🌲</p>', unsafe_allow_html=True)
+# 3. 處理邏輯函數
+def start_game(input_text):
+    pairs = []
+    for line in input_text.split('\n'):
+        if ',' in line:
+            eng, chi = line.split(',', 1)
+            pairs.append({'eng': eng.strip(), 'chi': chi.strip()})
     
-    col1, col2, col3 = st.columns(3)
-    def start_game(raw, name):
-        st.session_state.current_df = parse_data(raw)
-        st.session_state.unit_name = name
-        st.session_state.remaining_indices = list(range(len(st.session_state.current_df)))
-        st.session_state.idx = st.session_state.remaining_indices.pop(random.randrange(len(st.session_state.remaining_indices)))
-        st.session_state.score = 0
-        st.session_state.page = "study"
-        st.rerun()
+    if pairs:
+        st.session_state.vocab_list = pairs
+        st.session_state.current_round = random.sample(pairs, len(pairs))
+        st.session_state.wrong_list = []
+        st.session_state.current_pair = st.session_state.current_round.pop(0)
+        st.session_state.is_started = True
+        st.session_state.finished = False
 
-    with col1:
-        if st.button("🌱 第一單元"): start_game(U1_RAW, "第一單元")
-    with col2:
-        if st.button("🌿 第二單元"): start_game(U2_RAW, "第二單元")
-    with col3:
-        if st.button("🌳 第三單元"): start_game(U3_RAW, "第三單元")
-
-    st.divider()
-    st.write("### 📖 森林單字書籤")
-    tab1, tab2, tab3 = st.tabs(["第一單元", "第二單元", "第三單元"])
-    with tab1: st.dataframe(parse_data(U1_RAW), hide_index=True, use_container_width=True)
-    with tab2: st.dataframe(parse_data(U2_RAW), hide_index=True, use_container_width=True)
-    with tab3: st.dataframe(parse_data(U3_RAW), hide_index=True, use_container_width=True)
-
-# --- 拼字挑戰 ---
-elif st.session_state.page == "study":
-    c_back, c_t1, c_t2 = st.columns([1, 1, 1])
-    with c_back:
-        if st.button("⬅️ 返回"): st.session_state.page = "cover"; st.rerun()
-    with c_t1: st.session_state.show_cn = st.toggle("中文", value=st.session_state.show_cn)
-    with c_t2: st.session_state.show_ipa = st.toggle("音標", value=st.session_state.show_ipa)
-
-    row = st.session_state.current_df.iloc[st.session_state.idx]
-    current_word = row['英文'].strip()
-
-    st.write(f"🌟 **{st.session_state.unit_name}** | 進度：{st.session_state.score} / {len(st.session_state.current_df)}")
+def check_answer():
+    user_ans = st.session_state.user_input.strip()
+    correct_ans = st.session_state.current_pair['chi']
     
-    if st.session_state.get('success_trigger', False):
-        st.success(f"🎯 答對了！答案：{current_word}")
-        time.sleep(1)
-        if not st.session_state.remaining_indices:
-            st.session_state.page = "cover"
+    if user_ans == correct_ans:
+        st.toast("✅ 太棒了！答對了", icon="🎉")
+    else:
+        st.error(f"❌ 答錯囉！正確答案是：{correct_ans}")
+        st.session_state.wrong_list.append(st.session_state.current_pair)
+    
+    # 準備下一題
+    if st.session_state.current_round:
+        st.session_state.current_pair = st.session_state.current_round.pop(0)
+    else:
+        # 當這輪考完，檢查有沒有錯題要進入下一輪
+        if st.session_state.wrong_list:
+            st.warning("⚠️ 第一輪結束，準備開始複習答錯的單字！")
+            st.session_state.current_round = random.sample(st.session_state.wrong_list, len(st.session_state.wrong_list))
+            st.session_state.wrong_list = []
+            st.session_state.current_pair = st.session_state.current_round.pop(0)
         else:
-            st.session_state.idx = st.session_state.remaining_indices.pop(random.randrange(len(st.session_state.remaining_indices)))
-        st.session_state.success_trigger = False
+            st.session_state.finished = True
+            st.session_state.is_started = False
+    
+    st.session_state.user_input = "" # 清空輸入框
+
+# 4. 畫面顯示
+st.title("🎓 10B 尋夢單字挑戰")
+
+if not st.session_state.is_started and not st.session_state.finished:
+    st.subheader("第一步：輸入單字清單")
+    input_data = st.text_area("格式請用「英文,中文」(每行一個)", "apple,蘋果\nbanana,香蕉\ncomputer,電腦", height=200)
+    if st.button("🚀 開始挑戰", use_container_width=True):
+        start_game(input_data)
         st.rerun()
 
-    with st.container():
-        if st.session_state.show_cn: st.info(f"💡 中文：{row['中文']}")
-        if st.session_state.show_ipa: st.write(f"🎧 音標：{row['音標']}")
-        
-        # 🔊 播放鍵
-        if st.button("🔊 播放發音"):
-            text_to_speech(current_word)
+elif st.session_state.is_started:
+    # 顯示目前進度
+    total_left = len(st.session_state.current_round) + 1
+    wrong_count = len(st.session_state.wrong_list)
+    st.markdown(f"<div class='status-text'>剩餘題目：{total_left} | 本輪錯題積累：{wrong_count}</div>", unsafe_allow_html=True)
+    
+    # 出題區
+    st.markdown(f"""
+        <div class="vocab-card">
+            <div class="word-text">{st.session_state.current_pair['eng']}</div>
+            <div style="margin-top:10px; color:#555;">請輸入對應的中文</div>
+        </div>
+    """, unsafe_allow_html=True)
+    
+    st.text_input("在此輸入答案...", key="user_input", on_change=check_answer)
+    st.info("提示：輸入完直接按 Enter 即可檢查並跳下一題")
 
-        # 明文輸入
-        d_key = f"input_{st.session_state.score}_{st.session_state.idx}"
-        with st.form(key=f"form_{d_key}", clear_on_submit=True):
-            user_input = st.text_input("拼寫單字", label_visibility="collapsed", placeholder="在此輸入單字...", key=d_key).strip()
-            if st.form_submit_button("檢查答案"):
-                if user_input.lower() == current_word.lower():
-                    st.session_state.score += 1
-                    st.session_state.success_trigger = True
-                    st.rerun()
-                else:
-                    st.error("❌ 拼錯囉，再試試！")
+elif st.session_state.finished:
+    st.balloons()
+    st.success("🎊 恭喜！你已經掌握了所有單字！")
+    if st.button("重新開始新挑戰"):
+        st.session_state.clear()
+        st.rerun()
