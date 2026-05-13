@@ -5,7 +5,7 @@ import time
 import streamlit.components.v1 as components
 
 # 1. 基礎設定
-st.set_page_config(page_title="萌萌言語森林：挑戰模式", page_icon="🐾", layout="centered")
+st.set_page_config(page_title="言語森林", page_icon="🐾", layout="centered")
 
 # 2. 介面美化
 st.markdown("""
@@ -47,7 +47,7 @@ if 'current_q' not in st.session_state: st.session_state.current_q = None
 
 # --- 封面頁 ---
 if st.session_state.page == "cover":
-    st.markdown('<p class="cute-title">🐾 森林重複學習機 🌲</p>', unsafe_allow_html=True)
+    st.markdown('<p class="cute-title">🐾 單字學習 🌲</p>', unsafe_allow_html=True)
     
     col1, col2, col3 = st.columns(3)
     def init_quiz(raw, name):
