@@ -5,7 +5,7 @@ import time
 import streamlit.components.v1 as components
 
 # 1. 基礎網頁設定
-st.set_page_config(page_title="高中英檢/學測 1080 單字特訓", page_icon="📝", layout="centered")
+st.set_page_config(page_title="高中 1080 單字特訓", page_icon="📝", layout="centered")
 
 # 2. 刪除可愛元素，打造高質感日系簡約風格 (Muji/Japanese Aesthetics)
 st.markdown("""
@@ -237,7 +237,7 @@ def setup_unit(df, name, mode="normal"):
 
 # --- 1. 首頁選單 ---
 if st.session_state.page == "cover":
-    st.markdown('<p class="main-title">高中學測 1080 核心字彙特訓</p>', unsafe_allow_html=True)
+    st.markdown('<p class="main-title"> 1080 字彙特訓</p>', unsafe_allow_html=True)
     
     # 錯題弱點特訓
     wrong_count = len(st.session_state.global_wrongs)
