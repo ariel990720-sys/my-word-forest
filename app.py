@@ -24,15 +24,15 @@ st.markdown("""
     }
     .badge { font-size: 1.8rem; color: #1D4ED8; font-weight: bold; margin-top: 10px; }
     .example-box {
-        background-color: #F0FDF4; border-left: 5px solid #16A34A; padding: 15px; 
-        border-radius: 4px; text-align: left; margin-top: 15px;
+        background-color: #F0FDF4; border-left: 5px solid #16A34A; padding: 18px; 
+        border-radius: 8px; text-align: left; margin-top: 15px;
     }
     .word-title { color: #1E3A8A; font-size: 3.5rem; font-weight: 800; letter-spacing: 1px; margin-bottom: 5px; }
     .hint-text { font-size: 1.4rem; letter-spacing: 3px; color: #4B5563; font-family: monospace; }
     </style>
     """, unsafe_allow_html=True)
 
-# 3. 資料庫（已擴充第4欄：例句*例句中文）
+# 3. 完整保留原本提供的所有單字，並擴充專屬高中模擬例句與翻譯
 U1_RAW = """ignore,[ɪgˋnor],忽視,You should not ignore the doctor's advice if you want to get well soon.*如果你想早點康復，就不該忽視醫生的建議。
 ill,[ɪl],生病的,The star player missed the final game because he fell ill suddenly.*這位明星球員因為突然生病而錯過了決賽。
 imagine,[ɪˋmædʒɪn],想像,Can you imagine what life would be like without internet access?*你能想像沒有網路可用的生活會變怎樣嗎？
@@ -42,12 +42,130 @@ include,[ɪnˋklud],包含,The registration fee for the camp does not include lu
 income,[ˋɪn͵kʌm],收入,Many university students do part-time jobs to earn their own income.*許多大學生打工來賺取他們自己的收入。
 increase,[ɪnˋkris],增加,Due to inflation, the price of movie tickets has seen a significant increase recently.*由於通貨膨脹，電影票價最近有了顯著的增加。
 independence,[͵ɪndɪˋpɛndəns],獨立,The country celebrated its independence with a grand parade in the capital.*這個國家在首都舉行了盛大的遊行來慶祝其獨立。
-independent,[͵ɪndɪˋpɛndənt],獨立的,Moving out to live alone helped him become more mature and independent.*搬出去一個人住幫助他變得更加成熟與獨立。"""
+independent,[͵ɪndɪˋpɛndənt],獨立的,Moving out to live alone helped him become more mature and independent.*搬出去一個人住幫助他變得更加成熟與獨立。
+indicate,[ˋɪndə͵ket],指出,Studies indicate that getting enough sleep can greatly boost your memory.*研究指出，獲得充足的睡眠可以大大提升你的記憶力。
+industry,[ˋɪndəstrɪ],工業,The tech industry has been developing rapidly in Taiwan over the past decade.*過去十年來，科技工業在台灣發展得非常迅速。
+influence,[ˋɪnflʊəns],影響,Parents have a huge influence on their children's habits and behavior.*父母對孩子的習慣和行為有著巨大的影響。
+ink,[ɪŋk],墨水,The printer ran out of black ink, so I couldn't print my English essay.*印表機的黑色墨水用完了，所以我無法列印我的英文作文。
+insect,[ˋɪnsɛkt],昆蟲,We saw many unique species of insect during our field trip in the mountains.*我們在山區的戶外教學中看到了許多獨特種類的昆蟲。
+insist,[ɪnˋsɪst],堅持,My classmates insist on finishing the group project before Friday.*我的同學們堅持要在星期五之前完成這項分組報告。
+instance,[ˋnstəns],例子,For instance, learning how to cook is a very useful skill for high schoolers.*例如，學習如何下廚對高中生來說是一項非常實用的技能。
+instant,[ˋɪnstənt],即刻的,The movie was an instant success and attracted millions of viewers worldwide.*這部電影獲得了即刻的成功，吸引了全球數百萬觀眾。
+instrument,[ˋɪnstrəmənt],儀器/樂器,The guitar is one of the most popular musical instruments among teenagers.*吉他是青少年當中最受歡迎的樂器之一。
+international,[͵ɪntɚˋnæʃən!],國際性的,Taking part in international exchange programs can broaden your horizons.*參加國際交流計畫可以開拓你的視野。
+interview,[ˋɪntɚ͵vju],訪談,The manager will interview five applicants for the part-time job tomorrow.*經理明天將會面試五位前來應徵這份兼職工作的人。
+introduce,[͵ɪntrəˋdjus],介紹,Let me introduce my best friend to you; he just transferred to our school.*讓我向你介紹我最好的朋友，他剛轉學到我們學校。
+invent,[ɪnˋvɛnt],發明,Thomas Edison managed to invent many devices that changed human life.*湯瑪斯·愛迪生成功發明了許多改變人類生活的裝置。
+invitation,[͵ɪnvəˋteʃən],邀請,Thank you for the invitation to your birthday party next Saturday.*謝謝你邀請我參加下星期六的生日派對。
+invite,[ɪnˋvaɪt],邀請,We plan to invite our homeroom teacher to join our graduation dinner.*我們計劃邀請我們的導師來參加我們的畢業聚餐。
+island,[ˋaɪlənd],島,Taiwan is a beautiful island known for its friendly people and delicious food.*台灣是一座美麗的島嶼，以友善的人民和美食聞名。
+item,[ˋaɪtəm],項目,Please check every single item on the list before packing your schoolbag.*在整理書包之前，請檢查清單上的每一個項目。
+jacket,[ˋdʒækɪt],夾克,You should wear a heavy jacket because it's going to be freezing outside.*你應該穿件厚夾克，因為外面會非常冷。
+jam,[dʒæm],塞滿/果醬,We got stuck in a terrible traffic jam on our way to the airport.*我們在去機場的路上遇到了嚴重的交通堵塞。
+jazz,[dʒæz],爵士樂,My grandfather loves listening to smooth jazz while reading newspapers.*我的祖父喜歡在看報紙時聆聽溫和的爵士樂。
+jeans,[dʒinz],牛仔褲,Blue jeans are durable and never seem to go out of fashion.*藍色牛仔褲很耐穿，而且似乎永遠不會退流行。
+jeep,[dʒip],吉普車,They rented a powerful jeep to drive through the rough mountain roads.*他們租了一輛馬力強大的吉普車來開過崎嶇的山路。
+jog,[dʒɑg],慢跑,I usually jog around the park in the evening to keep myself fit.*我通常在傍晚繞著公園慢跑以保持身體健康。
+joint,[dʒɔɪnt],關節,Regular exercise keeps your joints flexible and your muscles strong.*規律的運動可以保持你的關節靈活與肌肉強壯。
+judge,[dʌdʒ],法官/判決,You should not judge a person based entirely on their appearance.*你不應該完全根據一個人的外表來評判他。
+juicy,[ˋdʒusɪ],多汁的,The watermelon we bought from the night market was extremely sweet and juicy.*我們從夜市買的水西瓜非常甜而且多汁。
+ketchup,[ˋkɛtʃəp],番茄醬,Would you like some ketchup or mustard to go with your French fries?*你要來點番茄醬或芥末醬搭配你的薯條嗎？
+kindergarten,[ˋkɪndɚ͵gɑrtn],幼稚園,My little sister still remembers her favorite teacher in kindergarten.*我妹妹仍然記得她幼稚園裡最喜歡的老師。
+kingdom,[ˋkɪŋdəm],王國,The old castle was once the center of a powerful and wealthy kingdom.*這座古老的城堡曾經是一個強大且富有王國的中心。
+knock,[nɑk],相撞/敲門,Please knock on the door before you enter the teacher's office.*在進入老師辦公室之前請先敲門。
+knowledge,[ˋnɑlɪdʒ],知識,Reading books is an excellent way to acquire new knowledge and vocabulary.*讀書是獲取新知識和字彙的絕佳方式。
+koala,[koˋɑlə],無尾熊,The tourist took a lot of photos of the sleeping koala at the zoo.*這位遊客在動物園拍了許多那隻正在睡覺的無尾熊的照片。
+ladybug,[ˋledɪ͵bʌg],瓢蟲,A small ladybug with black spots landed gently on my shoulder.*一隻帶有黑點的小瓢蟲輕輕地停在我的肩膀上。"""
 
-# 預備其餘單元結構（可依此格式填入）
-U2_RAW = """lane,[len],小路,The country lane was surrounded by beautiful sunflowers.*這條鄉間小路被美麗的向日葵包圍著。
-language,[ˋlæŋgwɪdʒ],語言,Learning a foreign language requires time, patience, and constant practice.*學習一門外語需要時間、耐心和不斷的練習。"""
-U3_RAW = """mango,[ˋmæŋgo],芒果,Summer is the best season to enjoy fresh and juicy mango shaved ice in Taiwan.*夏天是在台灣享受新鮮多汁芒果雪花冰的最佳季節。"""
+U2_RAW = """lane,[len],小路,The narrow country lane was surrounded by beautiful golden sunflowers.*這條狹窄的鄉間小路被美麗的金黃色向日葵包圍著。
+language,[ˋlæŋgwɪdʒ],語言,Learning a foreign language requires time, patience, and constant practice.*學習一門外語需要時間、耐心和不斷的練習。
+lantern,[ˋlæntɚn],燈籠,During the Lantern Festival, we released sky lanterns to pray for good luck.*在元宵節期間，我們施放天燈來祈求好運。
+lap,[læp],重疊部分,The kitten climbed onto my lap and purred itself to sleep.*小貓爬到 my 膝蓋上，發出呼嚕聲睡著了。
+latest,[ˋletɪst],最新的,Have you heard the latest news about the upcoming school concert?*你聽說了關於即將到來的學校音樂會的最新消息嗎？
+lawyer,[ˋlɔjɚ],律師,She is studying law at university because she wants to be a helpful lawyer.*她正在大學攻讀法律，因為她想成為一名能提供幫助的律師。
+leadership,[ˋlidɚʃɪp],領導,The president of the student council showed great leadership in organizing the event.*學生會長在籌辦這項活動中展現了極佳的領導能力。
+legal,[ˋlig!],法律上的,You should seek legal advice before signing any official contracts.*在簽署任何正式合同之前，你應該尋求法律建議。
+lemon,[ˋlɛmən],檸檬,Adding a slice of fresh lemon can make the water taste much better.*加一片新鮮檸檬可以讓水喝起來味道更好。
+lemonade,[͵lɛmənˋed],檸檬水,Nothing is more refreshing than a glass of ice-cold lemonade in the summer.*夏天沒有什麼比一杯冰涼的檸檬水更消暑的了。
+lend,[lɛnd],把……借給,Could you please lend me your eraser? I forgot to bring mine today.*可以請你借我你的橡皮擦嗎？我今天忘了帶我的。
+length,[lɛŋθ],長度,The English teacher asked us to write an essay of at least two pages in length.*英文老師要求我們寫一篇長度至少兩頁的作文。
+leopard,[ˋlɛpɚd],豹,The leopard is known for its incredible speed and beautiful spotted coat.*豹以其驚人的速度和美麗的斑點毛皮而聞名。
+lettuce,[ˋlɪs],萵苣,I always add plenty of fresh lettuce and tomatoes to my homemade sandwiches.*我總是精心地在我自製的三明治裡加入大量新鮮萵苣和番茄。
+library,[ˋlaɪ͵brɛrɪ],圖書館,The school library provides a quiet environment for students to study after class.*學校圖書館為學生們提供了課後複習的安靜環境。
+lick,[lɪk],舔,The dog tried to lick my hand to show its friendliness and warmth.*這隻狗試圖舔我的手以展現它的友善與熱情。
+lid,[lɪd],蓋子,Make sure the lid of the bottle is tightly closed so that it won't leak.*確保瓶子的蓋子緊閉，這樣它才不會漏水。
+lightning,[ˋlaɪtnɪŋ],閃電,A bright flash of lightning suddenly illuminated the whole night sky.*一束明亮的閃電突然照亮了整個夜空。
+limit,[ˋlɪmɪt],界限/限制,There is a strict speed limit on this highway to ensure driver safety.*這條高速公路上有嚴格的速度限制以確保駕駛安全。
+link,[lɪŋk],聯繫,The police managed to find a link between the two suspicious incidents.*警方成功找到了這兩起可疑事件之間的聯繫。
+liquid,[ˋlɪkwɪd],液體,Water is a type of liquid that changes its shape depending on the container.*水是一種會根據容器改變形狀的液體。
+listener,[ˋlɪsnɚ],傾聽者,An effective counselor must first be a patient and empathetic listener.*一位有效的輔導老師首先必須是一位有耐心且具同理心的傾聽者。
+loaf,[lof],一條,My mom bought a fresh loaf of bread from the bakery for our breakfast.*我媽媽從麵包店買了一整條新鮮麵包作為我們的早餐。
+local,[ˋlok!],地方性的,We love to visit local night markets to taste traditional Taiwanese snacks.*我們喜歡逛地方夜市來品嚐傳統的台灣小吃。
+locate,[loˋket],確定……的地點,The map helped us locate the famous historical site in the old town.*這張地圖幫助我們確認了舊城區內那處著名歷史古蹟的地點。
+lock,[lɑk],鎖,Don't forget to lock the back door before you leave the house.*在你離開房子之前，別忘了鎖上後門。
+log,[lɔg],圓木,They sat on a large fallen log near the campfire to stay warm.*他們坐在營火旁一根倒下的巨大圓木上以保持溫暖。
+lone,[lon],孤單的,A lone traveler walked quietly along the endless desert path.*一位孤單的旅人靜靜地走在無盡的沙漠小徑上。
+lonely,[ˋlonlɪ],孤獨的,Living alone in a foreign country can be quite lonely at first.*剛開始獨自居住在外國可能會感到相當孤獨。
+lose,[luz],丟失,Be careful with your wallet, or you might lose all your pocket money.*小心你的錢包，否則你可能會弄丟所有的零用錢。
+loser,[ˋluzɚ],失敗者,In a fair game, there will always be a winner and a graceful loser.*在公平的比賽中，總會有一個贏家和一個有風度的失敗者。
+loss,[lɔs],遺失,The sudden death of the beloved pet was a great loss to the whole family.*這隻心愛寵物的突然離世對全家人來說是一個巨大的損失。
+lovely,[ˋlʌvlɪ],可愛的,What a lovely weather we are having today for an outdoor picnic!*今天辦戶外野餐的天氣真是太可愛、太美好了！
+lover,[ˋlʌvɚ],戀人,He is a great lover of classical music and attends concerts regularly.*他是古典音樂的狂熱愛好者，並且定期參加音樂會。
+lower,[ˋloɚ],較低的,The department store offers lower prices during the anniversary sale.*這家百貨公司在週年慶特賣期間提供較低的價格。
+luck,[lʌk],運氣,I wish you the best of luck on your upcoming university entrance exam!*祝你在即將到來的大學入學考試中運氣絕佳、金榜題名！
+magazine,[͵mægəˋzin],雜誌,This monthly magazine covers interesting topics about science and technology.*這本月刊雜誌涵蓋了關於科學與科技的有趣主題。
+magic,[ˋmædʒɪk],魔法,The kids watched in awe as if the street performer had real magic.*孩子們驚奇地看著，彷彿那位街頭藝人真的擁有魔法一般。
+magician,[məˋdʒɪʃən],魔術師,The magician pulled a white rabbit out of his empty hat, surprising everyone.*魔術師從他空空如也的帽子裡拉出了一隻白兔，驚艷了所有人。
+main,[men],主要的,The main reason she failed the English quiz was a lack of vocabulary study.*她英文小考不及格的主要原因在於缺乏字彙複習。
+maintain,[menˋten],保持,It is important to maintain a healthy balance between study and relaxation.*在課業與放鬆之間保持健康的平衡是非常重要的。
+male,[mel],男性,The beautiful peacock we saw at the park was actually a male bird.*我們在公園看到的那隻美麗孔雀實際上是一隻雄性/男性的鳥。
+Mandarin,[ˋmændərɪn],華語,More and more high schools abroad are starting to offer Mandarin courses.*越來越多國外的高中開始提供華語課程。"""
+
+U3_RAW = """mango,[ˋmæŋgo],芒果,Summer is the best season to enjoy fresh and juicy mango shaved ice in Taiwan.*夏天是在台灣享受新鮮多汁芒果雪花冰的最佳季節。
+manner,[ˋmænɚ],方法/舉止,It is considered good manners to say thank you when someone helps you.*當有人幫助你時，說聲謝謝被視為是有禮貌的舉止。
+mark,[mɑrk],標記/痕跡,The teacher used a red pen to correct the errors and mark the grade.*老師用紅筆來修正錯誤並打上分數標記。
+marriage,[ˋmærɪdʒ],婚姻,The happy couple celebrated their tenth year of marriage with a trip to Japan.*這對幸福的夫妻用一趟日本之旅來慶祝他們結婚十週年的婚姻生活。
+mask,[mæsk],口罩/假面具,Wearing a face mask can effectively protect you from spreading germs.*配戴口罩可以有效地保護你免於散播病菌。
+mass,[mæs],大眾的,Social media has a huge impact on mass communication in modern society.*社群媒體對現代社會的大眾傳播有著巨大的影響。
+mat,[mæt],墊子,We placed a small welcome mat at the entrance of our classroom.*我們在教室門口放置了一塊小小的歡迎地墊。
+match,[mætʃ],相配/比賽,Our school basketball team won the final match after a tight competition.*我們學校籃球隊在一場緊張的競爭後贏得了決賽。
+mate,[met],夥伴,My classmates are not just classmates; they are also my lifelong mates.*我的同學們不只是同學，他們也是我一輩子的夥伴。
+material,[məˋtɪrɪəl],材料,You can find all the necessary study materials on the school website.*你可以在學校網站上找到所有必需的學習材料。
+meal,[mil],一餐,Breakfast is often considered the most important meal of the whole day.*早餐通常被認為是整天當中最重要的一餐。
+meaning,[ˋminɪŋ],含義,If you don't know the exact meaning of a word, you should consult a dictionary.*如果你不知道一個單字的確切含義，你應該查閱字典。
+means,[minz],手段,For many high school students, riding a bicycle is their main means of transport.*對許多高中生來說，騎腳踏車是他們主要的交通手段/工具。
+measurable,[ˋmɛʒərəb!],可測量的,Setting measurable goals can make your study plan much more effective.*設定可測量的目標可以讓你的讀書計畫有效得多。
+measure,[ˋmɛʒɚ],測量,The tailor used a tape to measure his waist before making the school uniform.*裁縫師在製作校服之前，用捲尺測量了他的腰圍。
+medicine,[ˋmɛdəsn],藥,Take this cough medicine three times a day after meals, as directed.*按照指示，這種感冒咳嗽藥一天在飯後服用三次。
+meeting,[ˋmitɪŋ],會議,The principal called a brief meeting to discuss the graduation ceremony.*校長召開了一場簡短的會議來討論畢業典禮的事宜。
+melody,[ˋmɛlədɪ],旋律,The catchy melody of the new song immediately captured the students' attention.*這首新歌朗朗上口的旋律立刻吸引了學生們的注意。
+melon,[ˋmɛlən],瓜,We love to eat iced sweet melon on hot summer afternoons to cool down.*我們喜歡在炎熱的夏天下午吃冰鎮甜瓜來消暑。
+member,[ˋmɛmbɚ],成員,She is an active member of the school dance club and practices every day.*她是學校熱舞社的活躍成員，並且每天進行練習。
+memory,[ˋm&mərɪ],記憶,Traveling with best friends always creates unforgettable high school memories.*與好朋友一起旅遊總是能創造難忘的高中記憶。
+menu,[ˋm&nju],菜單,The waiter handed us the menu as soon as we sat down at the restaurant.*我們一在餐廳坐下，服務生就遞給了我們菜單。
+message,[ˋm&sɪdʒ],消息,He left a text message saying that he would be ten minutes late for class.*他留下一則簡訊消息，說他上課會遲到十分鐘。
+metal,[ˋm&t!],金屬,These sturdy classroom desks are made of a strong combination of wood and metal.*這些堅固的教室課桌是由木頭與金屬的強力組合製成的。
+meter,[ˋmitɚ],計量器,The runner finished the one-hundred-meter race in less than eleven seconds.*這位跑者在不到十一秒的時間內完成了百米賽跑。
+method,[ˋm#θəd],方法,Using flashcards is a very popular method for memorizing English vocabulary.*使用字卡是記憶英文單字一種非常受歡迎的方法。
+military,[ˋmɪlə͵tɛrɪ],軍事的,In some countries, young people are required to complete compulsory military service.*在某些國家，年輕人被要求完成義務性的軍事服役。
+million,[ˋmɪljən],百萬,The video of the school festival performance received over one million views.*這段學校慶典表演的影片獲得了超過一百萬次的觀看數。
+mine,[maɪn],我的,That English dictionary on the desk is mine; thank you for finding it.*桌上的那本英文字典是我的，謝謝你幫我找到它。
+minus,[ˋmaɪnəs],減去,Ten minus three equals seven, which is a very simple math problem.*十減去三等於七，這是一道非常簡單的數學題。
+mirror,[ˋmɪrɚ],鏡子,She took a quick look in the mirror to check her hair before the presentation.*在簡報之前，她快速地照了一下鏡子以檢查她的頭髮。
+mix,[mɪks],混和,You can mix blue and yellow paint together to create a beautiful green.*你可以將藍色和黃色顏料混和在一起來創造出美麗的綠色。
+model,[ˋmɑd!],模型,The students worked in pairs to build a miniature model of a solar car.*學生們兩人一組，共同製作了一台太陽能汽車的微型模型。
+modern,[ˋmɑdɚn],現代的,The new library building features a highly modern design with glass walls.*新圖書館大樓採用了帶有玻璃牆的極具現代感的設計。
+monster,[ˋmɑnstɚ],怪物,The young child was scared to sleep because he dreamed of a scary monster.*這個幼童不敢睡覺，因為他夢到了一隻可怕的怪物。
+mosquito,[məsˋkito],蚊子,Remember to close the windows, or mosquitoes will come in and bite you.*記得關上窗戶，否則蚊子會進來咬你。
+moth,[mɔθ],蛾,A large brown moth was flying around the bright light bulb on the porch.*一隻巨大的褐色蛾正在門廊明亮的燈泡周圍飛來飛去。
+motion,[ˋmoʃən],姿態,The slow-motion replay clearly showed how the athlete caught the ball.*慢動作姿態重播清楚地顯示了這位運動員是如何接住球的。
+motorcycle,[ˋmotɚ͵saɪk!],摩托車,Riding a motorcycle without a helmet is strictly illegal in Taiwan.*在台灣，騎摩托車不戴安全帽是嚴格違法的。
+movable,[ˋmuvəb!],可移動的,The classroom partition walls are movable, allowing us to merge spaces.*教室的隔間牆是可移動的，讓我們能夠合併空間。
+MRT,[MRT],大眾捷運系統,Taking the MRT is a highly convenient way to travel around Taipei city.*搭乘大運捷運系統是在台北市內旅遊一種非常方便的方式。
+subway,[ˋsʌb͵we],地下鐵,The New York subway system is famous for being incredibly large and busy.*紐約地下鐵系統以極其龐大和繁忙而聞名。
+underground,[ˋʌndɚ͵graʊnd],地下鐵,Londoners often refer to their famous underground railway system as the Tube.*倫敦人經常將他們著名的地下鐵路系統稱為 Tube。
+metro,[ˋm&tro],地鐵,The Paris metro is well-known for its beautiful and artistic station entrances.*巴黎地鐵以其美麗且具藝術感的車站入口而聞名。
+mule,[mjul],騾,The farmer used a sturdy mule to carry heavy bags of corn up the hill.*農夫使用一隻強壯的騾子將沉重的玉米袋扛上山。"""
 
 def parse_data(raw):
     lines = [l.strip() for l in raw.strip().split('\n') if l.strip()]
@@ -59,7 +177,6 @@ def parse_data(raw):
             ex_en, ex_ch = example_all.split('*') if '*' in example_all else (example_all, "（暫無翻譯）")
             data.append([eng, ipa, ch, ex_en, ex_ch])
         else:
-            # 防呆
             data.append([parts[0], "", parts[1] if len(parts)>1 else "", "No example.", "無例句"])
     return pd.DataFrame(data, columns=["英文", "音標", "中文", "英文例句", "例句中文"])
 
@@ -73,7 +190,6 @@ if 'page' not in st.session_state: st.session_state.page = "cover"
 if 'show_cn' not in st.session_state: st.session_state.show_cn = True
 if 'show_ipa' not in st.session_state: st.session_state.show_ipa = True
 if 'show_len' not in st.session_state: st.session_state.show_len = True
-if 'show_ex_hint' not in st.session_state: st.session_state.show_ex_hint = True # 新增：挑戰時是否顯示例句挖空
 if 'auto_play' not in st.session_state: st.session_state.auto_play = True
 if 'combo' not in st.session_state: st.session_state.combo = 0
 if 'global_wrongs' not in st.session_state: st.session_state.global_wrongs = [] 
@@ -97,6 +213,7 @@ def setup_unit(df, name, mode="normal"):
 if st.session_state.page == "cover":
     st.markdown('<p class="cute-title">📝 高中學測 1080 單字特訓艙</p>', unsafe_allow_html=True)
     
+    # 錯題本入口
     wrong_count = len(st.session_state.global_wrongs)
     if wrong_count > 0:
         st.error(f"🚨 警告：目前累積 {wrong_count} 個未消滅弱點單字！")
@@ -115,14 +232,16 @@ if st.session_state.page == "cover":
         if st.button("🌳 Level 1 (U3)"): setup_unit(parse_data(U3_RAW), "Level 1 (U3)")
 
     st.divider()
-    st.write("### 📖 單字索引書籤 (含學測模擬句)")
+    
+    # 🚀 根據你的需求：下面的書籤單字書保持純粹乾淨，拿掉例句顯示！
+    st.write("### 📖 全單字快速查閱索引書籤")
     tab1, tab2, tab3 = st.tabs(["U1 清單", "U2 清單", "U3 清單"])
-    with tab1: st.dataframe(parse_data(U1_RAW), hide_index=True, use_container_width=True)
-    with tab2: st.dataframe(parse_data(U2_RAW), hide_index=True, use_container_width=True)
-    with tab3: st.dataframe(parse_data(U3_RAW), hide_index=True, use_container_width=True)
+    with tab1: st.dataframe(parse_data(U1_RAW)[["英文", "音標", "中文"]], hide_index=True, use_container_width=True)
+    with tab2: st.dataframe(parse_data(U2_RAW)[["英文", "音標", "中文"]], hide_index=True, use_container_width=True)
+    with tab3: st.dataframe(parse_data(U3_RAW)[["英文", "音標", "中文"]], hide_index=True, use_container_width=True)
 
 
-# --- 2. 預習環節（融入語境閱讀） ---
+# --- 2. 學習環節（例句與中文翻譯在這裡完美呈現） ---
 elif st.session_state.page == "pre_study":
     st.markdown(f"## 📖 {st.session_state.unit_name} · 核心記憶卡")
     
@@ -144,14 +263,16 @@ elif st.session_state.page == "pre_study":
         text-align: center;">
             <h1 class="word-title">{row['英文']}</h1>
             <p style="font-size: 1.2rem; color: #4B5563; margin-bottom: 5px;">🎧 {row['音標']}</p>
+            <p style="font-size: 1.3rem; color: #1E3A8A; font-weight: bold;">💡 中文意思：{row['中文']}</p>
         </div>
     """, unsafe_allow_html=True)
     
-    # 🚀 重點升級：預習時主動秀出英文例句
+    # 🚀 核心升級：例句直接出現在卡片裡，且自帶中文翻譯！
     st.markdown(f"""
         <div class="example-box">
-            <b style="color: #16A34A;">📝 學測語境模擬句：</b><br>
-            <span style="font-size: 1.15rem; font-style: italic; color: #1E293B;">{row['英文例句']}</span>
+            <b style="color: #16A34A;">📝 高中模擬語境句：</b><br>
+            <span style="font-size: 1.15rem; font-style: italic; color: #1E293B; display:block; margin-bottom:8px;">{row['英文例句']}</span>
+            <span style="font-size: 1.05rem; color: #4B5563; border-top: 1px dashed #CBD5E1; display:block; padding-top:6px;">🎯 <b>中文翻譯：</b>{row['例句中文']}</span>
         </div>
     """, unsafe_allow_html=True)
 
@@ -159,21 +280,17 @@ elif st.session_state.page == "pre_study":
         text_to_speech(row['英文'].strip())
         st.session_state.pre_study_audio = False
 
-    c1, c2, c3 = st.columns(3)
+    c1, c2 = st.columns(2)
     with c1:
-        if st.button("🔊 播放發音", use_container_width=True):
+        if st.button("🔊 播放單字發音", use_container_width=True):
             text_to_speech(row['英文'].strip())
     with c2:
-        with st.popover("👁️ 解鎖中文翻譯", use_container_width=True):
-            st.info(f"💡 字義：{row['中文']}")
-            st.caption(f"🎯 例句翻譯：{row['例句中文']}")
-    with c3:
         if not is_this_skipped:
-            if st.button("✅ 這題我會了 (跳過)", type="secondary", use_container_width=True):
+            if st.button("✅ 這題我會了 (本次跳過測驗)", type="secondary", use_container_width=True):
                 st.session_state.skipped_indices.add(s_idx)
                 st.rerun()
         else:
-            if st.button("🔄 取消跳過 (納入測驗)", type="secondary", use_container_width=True):
+            if st.button("🔄 取消跳過 (納入測驗群)", type="secondary", use_container_width=True):
                 st.session_state.skipped_indices.remove(s_idx)
                 st.rerun()
             
@@ -181,7 +298,7 @@ elif st.session_state.page == "pre_study":
     
     b1, b2, b3 = st.columns([1, 1, 2])
     with b1:
-        if st.button("⬅️ 上一個", disabled=(s_idx == 0), use_container_width=True):
+        if st.button("⬅_ 上一個", disabled=(s_idx == 0), use_container_width=True):
             st.session_state.study_idx -= 1
             st.session_state.pre_study_audio = True
             st.rerun()
@@ -192,7 +309,7 @@ elif st.session_state.page == "pre_study":
             st.rerun()
     with b3:
         active_count = len(df) - len(st.session_state.skipped_indices)
-        btn_label = f"⚔️ 啟動學測模擬挑戰 ({active_count}題)" if active_count > 0 else "❌ 無可挑戰單字"
+        btn_label = f"⚔️ 啟動拼字挑戰 ({active_count}題)" if active_count > 0 else "❌ 無可挑戰單字"
         
         if st.button(btn_label, type="primary", use_container_width=True, disabled=(active_count == 0)):
             final_indices = [i for i in range(len(df)) if i not in st.session_state.skipped_indices]
@@ -213,15 +330,13 @@ elif st.session_state.page == "pre_study":
 
 # --- 3. 挑戰頁 ---
 elif st.session_state.page == "study":
-    # 控制列（新增例句開關）
-    c_back, c_t1, c_t2, c_t3, c_t4, c_t5 = st.columns([1, 1, 1, 1.2, 1.2, 1.2])
+    c_back, c_t1, c_t2, c_t3, c_t4 = st.columns([1, 1, 1, 1.2, 1.2])
     with c_back:
         if st.button("⬅️ 放棄"): st.session_state.page = "pre_study"; st.rerun()
-    with c_t1: st.session_state.show_cn = st.toggle("中文", value=st.session_state.show_cn)
+    with c_t1: st.session_state.show_cn = st.toggle("中文提示", value=st.session_state.show_cn)
     with c_t2: st.session_state.show_ipa = st.toggle("音標", value=st.session_state.show_ipa)
     with c_t3: st.session_state.auto_play = st.toggle("🔊 自動發音", value=st.session_state.auto_play)
-    with c_t4: st.session_state.show_len = st.toggle("📝 字數提示", value=st.session_state.show_len)
-    with c_t5: st.session_state.show_ex_hint = st.toggle("📖 文意句提示", value=st.session_state.show_ex_hint)
+    with c_t4: st.session_state.show_len = st.toggle("📝 字數底線", value=st.session_state.show_len)
 
     row = st.session_state.current_df.iloc[st.session_state.idx]
     current_word = row['英文'].strip()
@@ -257,36 +372,19 @@ elif st.session_state.page == "study":
         st.rerun()
 
     with st.container():
-        # 🚀 重點升級：學測大題模擬（挖空例句提示）
-        if st.session_state.show_ex_hint:
-            raw_sentence = row['英文例句']
-            # 不分大小寫將目標單字替換為學測式底線
-            import re
-            blind_word = " " + ("_" * len(current_word)) + " "
-            # 防呆：精準比對單字
-            pattern = re.compile(r'\b' + re.escape(current_word) + r'\b', re.IGNORECASE)
-            masked_sentence = pattern.sub(f" **{blind_word}** ", raw_sentence)
-            
-            st.markdown(f"""
-                <div style="background-color: #EFF6FF; border-left: 5px solid #3B82F6; padding: 15px; border-radius: 8px; margin-bottom: 15px;">
-                    <b style="color: #2563EB;">📝 108課綱 文意字彙模擬題：</b><br>
-                    <span style="font-size: 1.2rem; line-height: 1.6; color: #1E293B;">{masked_sentence}</span>
-                </div>
-            """, unsafe_allow_html=True)
-            
         if st.session_state.show_len:
             underscores = " ".join(["_"] * len(current_word))
-            st.markdown(f'<p class="hint-text">長度提示：{underscores}  ({len(current_word)} 字)</p>', unsafe_allow_html=True)
+            st.markdown(f'<p class="hint-text">長度：{underscores}  ({len(current_word)} 字)</p>', unsafe_allow_html=True)
             
-        if st.session_state.show_cn: st.info(f"💡 中文提示：{row['中文']}")
+        if st.session_state.show_cn: st.info(f"💡 中文意思：{row['中文']}")
         if st.session_state.show_ipa: st.write(f"🎧 音標：{row['音標']}")
         
-        if st.button("🔊 手動播放發音", key=f"spk_{st.session_state.idx}"):
+        if st.button("🔊 手動發音", key=f"spk_{st.session_state.idx}"):
             text_to_speech(current_word)
 
         with st.form(key=f"q_{st.session_state.idx}", clear_on_submit=True):
-            u_in = st.text_input("輸入拼寫英文答案", label_visibility="collapsed", placeholder="根據文意在此填入拼寫單字...").strip()
-            if st.form_submit_button("檢查答案 (Enter)"):
+            u_in = st.text_input("輸入拼寫答案", label_visibility="collapsed", placeholder="請在此輸入拼寫單字...").strip()
+            if st.form_submit_button("檢查答案"):
                 if u_in.lower() == current_word.lower():
                     if st.session_state.idx not in st.session_state.wrong_indices:
                         st.session_state.first_try_correct += 1
@@ -301,8 +399,8 @@ elif st.session_state.page == "study":
                     st.rerun()
                 else:
                     st.error(f"❌ 答錯了！正確答案是： {current_word}")
-                    # 答錯加強顯示翻譯，加深印象
-                    st.warning(f"💡 句意：{row['例句中文']}")
+                    # 答錯加強顯示例句與句意，深度修正
+                    st.warning(f"📖 複習例句：{row['英文例句']}\n\n🎯 句意翻譯：{row['例句中文']}")
                     st.session_state.combo = 0
                     
                     item_dict = row.to_dict()
@@ -311,7 +409,7 @@ elif st.session_state.page == "study":
                         
                     st.session_state.wrong_indices.add(st.session_state.idx)
                     st.session_state.remaining_indices.append(st.session_state.idx)
-                    time.sleep(2.0) # 留時間讓學生看錯誤詳情
+                    time.sleep(2.5) 
                     st.session_state.idx = st.session_state.remaining_indices.pop(0)
                     st.session_state.is_review = st.session_state.idx in st.session_state.wrong_indices
                     st.session_state.trigger_audio = True 
@@ -333,14 +431,14 @@ elif st.session_state.page == "result":
         <div class="stat-box">
             <h3>本次核心單字記憶率</h3>
             <h1 style="color: #1E3A8A; font-size: 3.5rem;">{accuracy}%</h1>
-            <p>首刷即答對：<b>{st.session_state.first_try_correct}</b> / {st.session_state.total_count} (已排除主動跳過題)</p>
+            <p>首刷即答對：<b>{st.session_state.first_try_correct}</b> / {st.session_state.total_count}</p>
             <div class="badge">{badge}</div>
         </div>
     """, unsafe_allow_html=True)
     
     if st.session_state.global_wrongs:
         st.write(f"🎒 **目前累積未消滅的錯題數：{len(st.session_state.global_wrongs)}**")
-        st.dataframe(pd.DataFrame(st.session_state.global_wrongs)[["英文", "中文", "英文例句"]], hide_index=True, use_container_width=True)
+        st.dataframe(pd.DataFrame(st.session_state.global_wrongs)[["英文", "音標", "中文"]], hide_index=True, use_container_width=True)
         st.info("💡 秘訣：返回首頁點擊【弱點特訓】，直接針對這些錯題重新預習、挑戰，直到完全消滅它們！")
     else:
         st.balloons()
