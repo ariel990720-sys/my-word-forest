@@ -269,14 +269,28 @@ if st.session_state.page == "cover":
             setup_unit(pd.DataFrame(st.session_state.global_wrongs), "🎯 弱點特訓班", mode="wrong_notebook")
         st.divider()
 
+    # ─── 修正後的特訓進度選擇 ───
     st.write("### 📂 特訓進度選擇")
-    units = ALL_VOCAB["單元"].unique()
+    
+    # 這裡我們強制限縮只抓正確的單元名稱
+    units = ["Level 1 (U1)", "Level 1 (U2)", "Level 1 (U3)"]
+    
     cols = st.columns(3)
     for idx, u_name in enumerate(units):
         with cols[idx % 3]:
-            if st.button(u_name, use_container_width=True):
+            # 按鈕上只顯示乾淨的單元名字
+            if st.button(f"📁 {u_name}", use_container_width=True):
                 unit_df = ALL_VOCAB[ALL_VOCAB["單元"] == u_name]
                 setup_unit(unit_df, u_name)
+
+    st.divider()
+    st.write("### 📖 全單字快速索引")
+    tabs = st.tabs([f"{u} 清單" for u in units])
+    for idx, u_name in enumerate(units):
+        with tabs[idx]:
+            # 這裡顯示該單元的所有單字表格
+            current_unit_data = ALL_VOCAB[ALL_VOCAB["單元"] == u_name]
+            st.dataframe(current_unit_data[["英文", "音標", "中文"]], hide_index=True, use_container_width=True)
 
     st.divider()
     st.write("### 📖 全單字快速索引")
