@@ -68,51 +68,51 @@ def text_to_speech(text):
     js = f"""<script>window.speechSynthesis.cancel(); var msg = new SpeechSynthesisUtterance('{text}'); msg.lang = 'en-US'; window.speechSynthesis.speak(msg);</script>"""
     components.html(js, height=0)
 
-# 🚀 數據庫內嵌
+# 🚀 數據庫內嵌 (已修復換行與格式問題)
 RAW_CSV_DATA = """單元,英文,音標,中文,英文例句,例句中文
 Level 1 (U1),ignore,[ɪgˋnor],忽視,You should not ignore the doctor's advice if you want to get well soon.,如果你想早點康復，就不該忽視醫生的建議。
-ill,[ɪl],生病的,The star player missed the final game because he fell ill suddenly.,這位明星球員因為突然生病而錯過了決賽。
-imagine,[ɪˋmædʒɪn],想像,Can you imagine what life would be like without internet access?,你能想像沒有網路可用的生活會變怎樣嗎？
-importance,[ɪmˋpɔrtns],重要性,Our English teacher always emphasizes the importance of reading every day.,我們的英文老師總是強調每天閱讀的重要性。
-improve,[ɪmˋpruv],改善,The high school runner practiced hard to improve his speed and endurance.,這位高中跑者努力練習以改善他的速度與耐力。
-include,[ɪnˋklud],包含,The registration fee for the camp does not include lunch and transportation.,這個營隊的報名費並不包含午餐及交通費。
-income,[ˋɪn͵kʌm],收入,Many university students do part-time jobs to earn their own income.,許多大學生打工來賺取他們自己的收入。
-increase,[ɪnˋkris],增加,Due to inflation, the price of movie tickets has seen a significant increase recently.,由於通貨膨脹，電影票價最近有了顯著的增加。
-independence,[͵ɪndɪˋpɛndəns],獨立,The country celebrated its independence with a grand parade in the capital.,這個國家在首都舉行了盛大的遊行來慶祝其獨立。
-independent,[͵ɪndɪˋpɛndənt],獨立的,Moving out to live alone helped him become more mature and independent.,搬出去一個人住幫助他變得更加成熟與獨立。
-indicate,[ˋɪndə͵ket],指出,Studies indicate that getting enough sleep can greatly boost your memory.,研究指出，獲得充足的睡眠可以大大提升你的記憶力。
-industry,[ˋɪndəstrɪ],工業,The tech industry has been developing rapidly in Taiwan over the past decade.,過去十年來，科技工業在台灣發展得非常迅速。
-influence,[ˋɪnflʊəns],影響,Parents have a huge influence on their children's habits and behavior.,父母對孩子的習慣和行為有著巨大的影響。
-ink,[ɪŋk],墨水,The printer ran out of black ink so I couldn't print my English essay.,印表機的黑色墨水用完了，所以我無法列印我的英文作文。
-insect,[ˋɪnsɛkt],昆蟲,We saw many unique species of insect during our field trip in the mountains.,我們在山區的戶外教學中看到了許多獨特種類的昆蟲。
-insist,[ɪnˋsɪst],堅持,My classmates insist on finishing the group project before Friday.,我的同學們堅持要在星期五之前完成這項分組報告。
-instance,[ˋnstəns],例子,For instance learning how to cook is a very useful skill for high schoolers.,例如，學習如何下廚對高中生來說是一項非常實用的技能。
-instant,[ˋɪnstənt],即刻的,The movie was an instant success and attracted millions of viewers worldwide.,這部電影獲得了即刻的成功，吸引了全球數百萬觀眾。
-instrument,[ˋɪnstrəmənt],儀器/樂器,The guitar is one of the most popular musical instruments among teenagers.,吉他是青少年當中最受歡迎的樂器之一。
-international,[͵ɪntɚˋnæʃən!],國際性的,Taking part in international exchange programs can broaden your horizons.,參加國際交流計畫可以開拓你的視野。
-interview,[ˋɪntɚ͵vju],訪談,The manager will interview five applicants for the part-time job tomorrow.,經理明天將會面試五位前來應徵這份兼職工作的人。
-introduce,[͵ɪntrəˋdjus],介紹,Let me introduce my best friend to you; he just transferred to our school.,讓我向你介紹我最好的朋友，他剛轉學到我們學校。
-invent,[ɪnˋvɛnt],發明,Thomas Edison managed to invent many devices that changed human life.,湯瑪斯·愛迪生成功發明了許多改變人類生活的裝置。
-invitation,[͵ɪnvəˋteʃən],邀請,Thank you for the invitation to your birthday party next Saturday.,謝謝你邀請我參加下星期六的生日派對。
-invite,[ɪnˋvaɪt],邀請,We plan to invite our homeroom teacher to join our graduation dinner.,我們計劃邀請我們的導師來參加我們的畢業聚餐。
-island,[ˋaɪlənd],島,Taiwan is a beautiful island known for its friendly people and delicious food.,台灣是一座美麗的島嶼，以友善的人民和美食聞名。
-item,[ˋaɪtəm],項目,Please check every single item on the list before packing your schoolbag.,在整理書包之前，請檢查清單上的每一個項目。
-jacket,[ˋdʒækɪt],夾克,You should wear a heavy jacket because it's going to be freezing outside.,你應該穿件厚夾克，因為外面會非常冷。
-jam,[dʒæm],塞滿/果醬,We got stuck in a terrible traffic jam on our way to the airport.,我們在去機場的路上遇到了嚴重的交通堵塞。
-jazz,[dʒæz],爵士樂,My grandfather loves listening to smooth jazz while reading newspapers.,我的祖父喜歡在看報紙時聆聽溫和的爵士樂。
-jeans,[dʒinz],牛仔褲,Blue jeans are durable and never seem to go out of fashion.,藍色牛仔褲很耐穿，而且似乎永遠不會退流行。
-jeep,[dʒip],吉普車,They rented a powerful jeep to drive through the rough mountain roads.,他們租了一輛馬力強大的吉普車來開過崎嶇的山路。
-jog,[dʒɑg],慢跑,I usually jog around the park in the evening to keep myself fit.,我通常在傍晚繞著公園慢跑以保持身體健康。
-joint,[dʒɔɪnt],關節,Regular exercise keeps your joints flexible and your muscles strong.,規律的運動可以保持你的關節靈活與肌肉強壯。
-judge,[dʌdʒ],法官/判決,You should not judge a person based entirely on their appearance.,你不應該完全根據一個人的外表來評判他。
-juicy,[ˋdʒusɪ],多汁的,The watermelon we bought from the night market was extremely sweet and juicy.,我們從夜市買的西瓜非常甜而且多汁。
-ketchup,[ˋkɛtʃəp],番茄醬,Would you like some ketchup or mustard to go with your French fries?,你要來點番茄醬或芥末醬搭配你的薯條嗎？
-kindergarten,[ˋkɪndɚ͵gɑrtn],幼稚園,My little sister still remembers her favorite teacher in kindergarten.,我妹妹仍然記得她幼稚園裡最喜歡的老師。
-kingdom,[ˋkɪŋdəm],王國,The old castle was once the center of a powerful and wealthy kingdom.,這座古老的城堡曾經是一個強大且富有王國的中心。
-knock,[nɑk],相撞/敲門,Please knock on the door before you enter the teacher's office.,在進入老師辦公室之前請先敲門。
-knowledge,[ˋnɑlɪdʒ],知識,Reading books is an excellent way to acquire new knowledge and vocabulary.,讀書是獲取新知識和字彙的絕佳方式。
-koala,[koˋɑlə],無尾熊,The tourist took a lot of photos of the sleeping koala at the zoo.,這位遊客在動物園拍了許多那隻正在睡覺的無尾熊的照片。
-ladybug,[ˋledɪ͵bʌg],瓢蟲,A small ladybug with black spots landed gently on my shoulder.,一隻帶有黑點的小瓢蟲輕輕地停在我的肩膀上。
+Level 1 (U1),ill,[ɪl],生病的,The star player missed the final game because he fell ill suddenly.,這位明星球員因為突然生病而錯過了決賽。
+Level 1 (U1),imagine,[ɪˋmædʒɪn],想像,Can you imagine what life would be like without internet access?,你能想像沒有網路可用的生活會變怎樣嗎？
+Level 1 (U1),importance,[ɪmˋpɔrtns],重要性,Our English teacher always emphasizes the importance of reading every day.,我們的英文老師總是強調每天閱讀的重要性。
+Level 1 (U1),improve,[ɪmˋpruv],改善,The high school runner practiced hard to improve his speed and endurance.,這位高中跑者努力練習以改善他的速度與耐力。
+Level 1 (U1),include,[ɪnˋklud],包含,The registration fee for the camp does not include lunch and transportation.,這個營隊的報名費並不包含午餐及交通費。
+Level 1 (U1),income,[ˋɪn͵kʌm],收入,Many university students do part-time jobs to earn their own income.,許多大學生打工來賺取他們自己的收入。
+Level 1 (U1),increase,[ɪnˋkris],增加,Due to inflation, the price of movie tickets has seen a significant increase recently.,由於通貨膨脹，電影票價最近有了顯著的增加。
+Level 1 (U1),independence,[͵ɪndɪˋpɛndəns],獨立,The country celebrated its independence with a grand parade in the capital.,這個國家在首都舉行了盛大的遊行來慶祝其獨立。
+Level 1 (U1),independent,[͵ɪndɪˋpɛndənt],獨立的,Moving out to live alone helped him become more mature and independent.,搬出去一個人住幫助他變得更加成熟與獨立。
+Level 1 (U1),indicate,[ˋɪndə͵ket],指出,Studies indicate that getting enough sleep can greatly boost your memory.,研究指出，獲得充足的睡眠可以大大提升你的記憶力。
+Level 1 (U1),industry,[ˋɪndəstrɪ],工業,The tech industry has been developing rapidly in Taiwan over the past decade.,過去十年來，科技工業在台灣發展得非常迅速。
+Level 1 (U1),influence,[ˋɪnflʊəns],影響,Parents have a huge influence on their children's habits and behavior.,父母對孩子的習慣和行為有著巨大的影響。
+Level 1 (U1),ink,[ɪŋk],墨水,The printer ran out of black ink so I couldn't print my English essay.,印表機的黑色墨水用完了，所以我無法列印我的英文作文。
+Level 1 (U1),insect,[ˋɪnsɛkt],昆蟲,We saw many unique species of insect during our field trip in the mountains.,我們在山區的戶外教學中看到了許多獨特種類的昆蟲。
+Level 1 (U1),insist,[ɪnˋsɪst],堅持,My classmates insist on finishing the group project before Friday.,我的同學們堅持要在星期五之前完成這項分組報告。
+Level 1 (U1),instance,[ˋnstəns],例子,For instance learning how to cook is a very useful skill for high schoolers.,例如，學習如何下廚對高中生來說是一項非常實用的技能。
+Level 1 (U1),instant,[ˋɪnstənt],即刻的,The movie was an instant success and attracted millions of viewers worldwide.,這部電影獲得了即刻的成功，吸引了全球數百萬觀眾。
+Level 1 (U1),instrument,[ˋɪnstrəmənt],儀器/樂器,The guitar is one of the most popular musical instruments among teenagers.,吉他是青少年當中最受歡迎的樂器之一。
+Level 1 (U1),international,[͵ɪntɚˋnæʃən!],國際性的,Taking part in international exchange programs can broaden your horizons.,參加國際交流計畫可以開拓你的視野。
+Level 1 (U1),interview,[ˋɪntɚ͵vju],訪談,The manager will interview five applicants for the part-time job tomorrow.,經理明天將會面試五位前來應徵這份兼職工作的人。
+Level 1 (U1),introduce,[͵ɪntrəˋdjus],介紹,Let me introduce my best friend to you; he just transferred to our school.,讓我向你介紹我最好的朋友，他剛轉學到我們學校。
+Level 1 (U1),invent,[ɪnˋvɛnt],發明,Thomas Edison managed to invent many devices that changed human life.,湯瑪斯·愛迪生成功發明了許多改變人類生活的裝置。
+Level 1 (U1),invitation,[͵ɪnvəˋteʃən],邀請,Thank you for the invitation to your birthday party next Saturday.,謝謝你邀請我參加下星期六的生日派對。
+Level 1 (U1),invite,[ɪnˋvaɪt],邀請,We plan to invite our homeroom teacher to join our graduation dinner.,我們計劃邀請我們的導師來參加我們的畢業聚餐。
+Level 1 (U1),island,[ˋaɪlənd],島,Taiwan is a beautiful island known for its friendly people and delicious food.,台灣是一座美麗的島嶼，以友善的人民和美食聞名。
+Level 1 (U1),item,[ˋaɪtəm],項目,Please check every single item on the list before packing your schoolbag.,在整理書包之前，請檢查清單上的每一個項目。
+Level 1 (U1),jacket,[ˋdʒækɪt],夾克,You should wear a heavy jacket because it's going to be freezing outside.,你應該穿件厚夾克，因為外面會非常冷。
+Level 1 (U1),jam,[dʒæm],塞滿/果醬,We got stuck in a terrible traffic jam on our way to the airport.,我們在去機場的路上遇到了嚴重的交通堵塞。
+Level 1 (U1),jazz,[dʒæz],爵士樂,My grandfather loves listening to smooth jazz while reading newspapers.,我的祖父喜歡在看報紙時聆聽溫和的爵士樂。
+Level 1 (U1),jeans,[dʒinz],牛仔褲,Blue jeans are durable and never seem to go out of fashion.,藍色牛仔褲很耐穿，而且似乎永遠不會退流行。
+Level 1 (U1),jeep,[dʒip],吉普車,They rented a powerful jeep to drive through the rough mountain roads.,他們租了一輛馬力強大的吉普車來開過崎嶇的山路。
+Level 1 (U1),jog,[dʒɑg],慢跑,I usually jog around the park in the evening to keep myself fit.,我通常在傍晚繞著公園慢跑以保持身體健康。
+Level 1 (U1),joint,[dʒɔɪnt],關節,Regular exercise keeps your joints flexible and your muscles strong.,規律的運動可以保持你的關節靈活與肌肉強壯。
+Level 1 (U1),judge,[dʌdʒ],法官/判決,You should not judge a person based entirely on their appearance.,你不應該完全根據一個人的外表來評判他。
+Level 1 (U1),juicy,[ˋdʒusɪ],多汁的,The watermelon we bought from the night market was extremely sweet and juicy.,我們從夜市買的西瓜非常甜而且多汁。
+Level 1 (U1),ketchup,[ˋkɛtʃəp],番茄醬,Would you like some ketchup or mustard to go with your French fries?,你要來點番茄醬或芥末醬搭配你的薯條嗎？
+Level 1 (U1),kindergarten,[ˋkɪndɚ͵gɑrtn],幼稚園,My little sister still remembers her favorite teacher in kindergarten.,我妹妹仍然記得她幼稚園裡最喜歡的老師。
+Level 1 (U1),kingdom,[ˋkɪŋdəm],王國,The old castle was once the center of a powerful and wealthy kingdom.,這座古老的城堡曾經是一個強大且富有王國的中心。
+Level 1 (U1),knock,[nɑk],相撞/敲門,Please knock on the door before you enter the teacher's office.,在進入老師辦公室之前請先敲門。
+Level 1 (U1),knowledge,[ˋnɑlɪdʒ],知識,Reading books is an excellent way to acquire new knowledge and vocabulary.,讀書是獲取新知識和字彙的絕佳方式。
+Level 1 (U1),koala,[koˋɑlə],無尾熊,The tourist took a lot of photos of the sleeping koala at the zoo.,這位遊客在動物園拍了許多那隻正在睡覺的無尾熊的照片。
+Level 1 (U1),ladybug,[ˋledɪ͵bʌg],瓢蟲,A small ladybug with black spots landed gently on my shoulder.,一隻帶有黑點的小瓢蟲輕輕地停在我的肩膀上。
 Level 1 (U2),lane,[len],小路,The narrow country lane was surrounded by beautiful golden sunflowers.,這條狹窄的鄉間小路被美麗的金黃色向日葵包圍著。
 Level 1 (U2),language,[ˋlæŋgwɪdʒ],語言,Learning a foreign language requires time patience and constant practice.,學習一門外語需要時間、耐心和不斷的練習。
 Level 1 (U2),lantern,[ˋlæntɚn],燈籠,During the Lantern Festival we released sky lanterns to pray for good luck.,在元宵節期間，我們施放天燈來祈求好運。
@@ -164,7 +164,7 @@ Level 1 (U3),mask,[mæsk],口罩/假面具,Wearing a face mask can effectively p
 Level 1 (U3),mass,[mæs],大眾的,Social media has a huge impact on mass communication in modern society.,社群媒體對現代社會的大眾傳播有著巨大的影響。
 Level 1 (U3),mat,[mæt],墊子,We placed a small welcome mat at the entrance of our classroom.,我們在教室門口放置了一塊小小的歡迎地墊。
 Level 1 (U3),match,[mætʃ],相配/比賽,Our school basketball team won the final match after a tight competition.,我們學校籃球隊在一場緊張的競爭後贏得了決賽。
-Level 1 (U3),mate,[met],夥伴,My classmates are not just classmates; they are also my lifelong mates.,我的同學們不只是同學，他們也是我一輩子的夥伴。
+Level 1 (U3),mate,[met],夥伴,My classmates are not just classmates; they are also my lifelong mates.,我的同學們不貞是同學，他們也是我一輩子的夥伴。
 Level 1 (U3),material,[məˋtɪrɪəl],材料,You can find all the necessary study materials on the school website.,你可以在學校網站上找到所有必需的學習材料。
 Level 1 (U3),meal,[mil],一餐,Breakfast is often considered the most important meal of the whole day.,早餐通常被認為是整天當中最重要的一餐。
 Level 1 (U3),meaning,[ˋminɪŋ],含義,If you don't know the exact meaning of a word you should consult a dictionary.,如果你不知道一個單字的確切含義，你應該查閱字典。
@@ -176,12 +176,12 @@ Level 1 (U3),meeting,[ˋmitɪŋ],會議,The principal called a brief meeting to 
 Level 1 (U3),melody,[ˋmɛlədɪ],旋律,The catchy melody of the new song immediately captured the students' attention.,這首新歌朗朗上口的旋律立刻吸引了學生們的注意。
 Level 1 (U3),melon,[ˋmɛlən],瓜,We love to eat iced sweet melon on hot summer afternoons to cool down.,我們喜歡在炎熱的夏天下午吃冰鎮甜瓜來消暑。
 Level 1 (U3),member,[ˋmɛmbɚ],成員,She is an active member of the school dance club and practices every day.,她是學校熱舞社的活躍成員，並且每天進行練習。
-Level 1 (U3),memory,[ˋm&mərɪ],記憶,Traveling with best friends always locally creates unforgettable high school memories.,與好朋友一起旅遊總是能創造難忘的高中記憶。
-Level 1 (U3),menu,[ˋm&nju],菜單,The waiter handed us the menu as soon as we sat down at the restaurant.,我們一在餐廳坐下，服務生就遞給了我們菜單。
-Level 1 (U3),message,[ˋm&sɪdʒ],消息,He left a text message saying that he would be ten minutes late for class.,他留下一則簡訊消息，說他上課會遲到十分鐘。
-Level 1 (U3),metal,[ˋm&t!],金屬,These sturdy classroom desks are made of a strong combination of wood and metal.,這些堅固的教室課桌是由木頭與金屬的強力組合製成的。
+Level 1 (U3),memory,[ˋmɛmərɪ],記憶,Traveling with best friends always locally creates unforgettable high school memories.,與好朋友一起旅遊總是能創造難忘的高中記憶。
+Level 1 (U3),menu,[ˋmɛnju],菜單,The waiter handed us the menu as soon as we sat down at the restaurant.,我們一在餐廳坐下，服務生就遞給了我們菜單。
+Level 1 (U3),message,[ˋmɛsɪdʒ],消息,He left a text message saying that he would be ten minutes late for class.,他留下一則簡訊消息，說他上課會遲到十分鐘。
+Level 1 (U3),metal,[ˋmɛt!],金屬,These sturdy classroom desks are made of a strong combination of wood and metal.,這些堅固的教室課桌是由木頭與金屬的強力組合製成的。
 Level 1 (U3),meter,[ˋmitɚ],計量器,The runner finished the one-hundred-meter race in less than eleven seconds.,這位跑者在不到十一秒的時間內完成了百米賽跑。
-Level 1 (U3),method,[ˋm#θəd],方法,Using flashcards is a very popular method for memorizing English vocabulary.,使用字卡是記憶英文單字一種非常受歡迎的方法。
+Level 1 (U3),method,[ˋmɛθəd],方法,Using flashcards is a very popular method for memorizing English vocabulary.,使用字卡是記憶英文單字一種非常受歡迎的方法。
 Level 1 (U3),military,[ˋmɪlə͵tɛrɪ],軍事的,In some countries young people are required to complete compulsory military service.,在某些國家，年輕人被要求完成義務性的軍事服役。
 Level 1 (U3),million,[ˋmɪljən],百萬,The video of the school festival performance received over one million views.,這段學校慶典表演的影片獲得了超過一百萬次的觀看數。
 Level 1 (U3),mine,[maɪn],我的,That English dictionary on the desk is mine; thank you for finding it.,桌上的那本英文字典是我的，謝謝你幫我找到它。
@@ -191,8 +191,8 @@ Level 1 (U3),mix,[mɪks],混和,You can mix blue and yellow paint together to cr
 Level 1 (U3),model,[ˋmɑd!],模型,The students worked in pairs to build a miniature model of a solar car.,學生們兩人一組，共同製作了一台太陽能汽車的微型模型。
 Level 1 (U3),modern,[ˋmɑdɚn],現代的,The new library building features a highly modern design with glass walls.,新圖書館大樓採用了帶有玻璃牆的極具現代感的設計。
 Level 1 (U3),monster,[ˋmɑnstɚ],怪物,The young child was scared to sleep because he dreamed of a scary monster.,這個幼童不敢睡覺，因為他夢到了一隻可怕的怪物。
-Level 1 (U3),mosquito,[məsˋkito],蚊子,Remember to close the windows or mosquitoes will come in and bite you.,記得關上窗戶，否則子會進來咬你。
-Level 1 (U3),moth,[mɔθ],蛾,A large brown moth was flying around the bright light bulb on the porch.,一隻褐色的蛾正在門廊明亮的燈泡周圍飛來飛去。
+Level 1 (U3),mosquito,[məsˋkito],蚊子,Remember to close the windows or mosquitoes will come in and bite you.,記得關上窗戶，否則蚊子會進來咬你。
+Level 1 (U3),moth,[mɔθ],蛾,A large brown moth was flying around the bright light bulb on the porch.,一隻褐色的蛾正在門廊明亮的燈泡周圍飛來飛建立。
 Level 1 (U3),motion,[ˋmoʃən],姿態,The slow-motion replay clearly showed how the athlete caught the ball.,慢動作姿態重播清楚地顯示了這位運動員是如何接住球的。
 Level 1 (U3),motorcycle,[ˋmotɚ͵saɪk!],摩托車,Riding a motorcycle without a helmet is strictly illegal in Taiwan.,在台灣，騎摩托車不戴安全帽是嚴格違法的。
 Level 1 (U3),movable,[ˋmuvəb!],可移動的,The classroom partition walls are movable allowing us to merge spaces.,教室的隔間牆是可移動的，讓我們能夠合併空間。
@@ -269,16 +269,12 @@ if st.session_state.page == "cover":
             setup_unit(pd.DataFrame(st.session_state.global_wrongs), "🎯 弱點特訓班", mode="wrong_notebook")
         st.divider()
 
-    # ─── 修正後的特訓進度選擇 ───
+    # 正確的單元選擇大按鈕
     st.write("### 📂 特訓進度選擇")
-    
-    # 這裡我們強制限縮只抓正確的單元名稱
     units = ["Level 1 (U1)", "Level 1 (U2)", "Level 1 (U3)"]
-    
     cols = st.columns(3)
     for idx, u_name in enumerate(units):
         with cols[idx % 3]:
-            # 按鈕上只顯示乾淨的單元名字
             if st.button(f"📁 {u_name}", use_container_width=True):
                 unit_df = ALL_VOCAB[ALL_VOCAB["單元"] == u_name]
                 setup_unit(unit_df, u_name)
@@ -288,16 +284,8 @@ if st.session_state.page == "cover":
     tabs = st.tabs([f"{u} 清單" for u in units])
     for idx, u_name in enumerate(units):
         with tabs[idx]:
-            # 這裡顯示該單元的所有單字表格
             current_unit_data = ALL_VOCAB[ALL_VOCAB["單元"] == u_name]
             st.dataframe(current_unit_data[["英文", "音標", "中文"]], hide_index=True, use_container_width=True)
-
-    st.divider()
-    st.write("### 📖 全單字快速索引")
-    tabs = st.tabs([f"{u} 清單" for u in units])
-    for idx, u_name in enumerate(units):
-        with tabs[idx]:
-            st.dataframe(ALL_VOCAB[ALL_VOCAB["單元"] == u_name][["英文", "音標", "中文"]], hide_index=True, use_container_width=True)
 
 # --- 2. 學習環節 ---
 elif st.session_state.page == "pre_study":
@@ -335,7 +323,7 @@ elif st.session_state.page == "pre_study":
         if not is_this_skipped:
             if st.button("✅ 已熟記 (本次跳過測驗)", type="secondary", use_container_width=True):
                 st.session_state.skipped_indices.add(s_idx)
-                st.session_state.skipped_total += 1 # 累計到全域
+                st.session_state.skipped_total += 1
                 st.rerun()
         else:
             if st.button("🔄 取消跳過 (重回測驗群)", type="secondary", use_container_width=True):
